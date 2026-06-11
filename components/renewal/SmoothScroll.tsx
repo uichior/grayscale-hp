@@ -35,6 +35,10 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
 
     lenisRef.current = lenis
 
+    // グローバルに lenis インスタンスを expose（RenewalHeader 等のアンカー scrollTo に使用）
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ;(window as any).__lenis = lenis
+
     // Lenis の raf を gsap.ticker に統合（公式推奨パターン）
     function onFrame(time: number) {
       lenis.raf(time * 1000)
@@ -57,6 +61,8 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
       gsap.ticker.remove(onFrame)
       lenis.destroy()
       lenisRef.current = null
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      delete (window as any).__lenis
     }
   }, [])
 

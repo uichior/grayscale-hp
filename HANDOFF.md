@@ -199,8 +199,8 @@ tailwind.config.js ← CSS変数をTailwindトークンとして拡張済み
 
 ### 後続エージェントへの作業（未着手）
 
-- [ ] **RenewalHeader** — ロゴSVG・ナビ・SPハンバーガー・スクロールで透明→白背景のアニメーション
-- [ ] **HeroSection** — 巨大タイポのGSAP reveal（clip-path or opacity）・カスタムカーソル統合
+- [x] **RenewalHeader** — テキストロゴ・ナビ（Story/Services/Proof/Contact、日英併記）・SPハンバーガー＋フルスクリーンオーバーレイ・スクロールで透明→backdrop-blur+border
+- [x] **HeroSection** — 巨大タイポ3行（選ぶ/導く/つくる、weight 200→500→900のグラデーション）・clip-path + translateY GSAP reveal・パンチライン「全部やるから、本物。」・パララックス（ScrollTrigger scrub）
 - [ ] **StorySection** — 段落スクロール連動フェードイン・数字のシグナルカラー
 - [ ] **ValuesSection** — 3ブロックのスライドイン・SaaSロゴグリッド
 - [ ] **ProofSection** — 数字の CountUp アニメーション・実数値をクライアント（星さん）確認して更新
@@ -243,3 +243,31 @@ tailwind.config.js ← CSS変数をTailwindトークンとして拡張済み
 
 SmartHR・Google Workspace 等のロゴは各社のブランドガイドラインに従うこと。
 白黒またはグレーでの掲示が安全（カラーバージョンは許諾範囲を確認）。
+
+---
+
+## 6. 第2走者エージェント実装メモ（RenewalHeader + HeroSection）
+
+### RenewalHeader 実装詳細
+
+- テキストロゴ「Grayscale」: `font-display font-bold text-ink`（Inter、Inter Bold相当）
+- ナビアイテム: Story/Services/Proof/Contact + 日本語サブラベル（.label-mono）
+- スクロール状態変化: `window.scrollY > 48` で `backdrop-blur-md border-b bg-paper/80` に切り替え
+- SPハンバーガー: 3本線を CSS transition で X に変形、フルスクリーンオーバーレイで各ナビ巨大テキスト表示
+- Lenisアンカー: `window.__lenis` 経由で `scrollTo` を呼ぶ。SmoothScroll.tsx が `(window).__lenis = lenis` でexpose済み
+- メニュー開閉: `document.body.style.overflow = 'hidden'` でスクロールロック、ESC/リンククリックで閉じる
+
+### HeroSection 実装詳細
+
+- 巨大タイポ3行: `font-size: clamp(3.5rem, 12vw, 11rem)`、各行を `overflow-hidden` でラップしてclip-path reveal
+  - 行1「選ぶ。」: fontWeight 200
+  - 行2「導く。」: fontWeight 500
+  - 行3「つくる。」: fontWeight 900（句点「。」のみ `--color-signal` = #FF4D00）
+  - 各行の右側に SELECT / GUIDE / BUILD ラベル（`.label-mono`、sm以上表示）
+- 入場アニメーション: `gsap.timeline` で行ごとに `clipPath: 'inset(0 0 0% 0)'` + `y: 0` を stagger 実行（合計約1秒）
+- パンチライン「全部やるから、本物。」: `font-display font-black`、fluid type clamp(1.5rem, 3.5vw, 2.75rem)
+- サブコピー: Noto Sans JP、font-light、最大36em幅
+- パララックス: `typoBgRef` div を ScrollTrigger + scrub 1.2 で `-12%` Y移動（pinなし）
+- 背景: 120px グリッド、opacity 0.35（方眼ではなく単線、既視感を避ける）
+- `prefers-reduced-motion: reduce`: 即時表示（gsap.set で全要素を表示状態に）
+- スクロールインジケーター: SCROLL + CSS animation の縦線（純粋CSS、軽量）
