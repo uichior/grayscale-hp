@@ -14,15 +14,16 @@ const inter = Inter({
 })
 
 /**
- * Noto Sans JP — 日本語（variable font、weight 100–900）
- * axes: ['wght'] で可変ウェイト軸を有効化。
- * weight 配列指定は個別ファイルになるため variable を使う。
+ * Noto Sans JP — 日本語（weight 100–900）
+ * display: optional で初回レンダーをブロックしない。
+ * preload: false でリソースヒントを出さない（LCP 改善）
+ * 使用ウェイトを絞る（200/400/700/900 の4種のみ）
  */
 const notoSansJP = Noto_Sans_JP({
   subsets: ['latin'],
   variable: '--font-noto-var',
-  display: 'swap',
-  weight: ['100', '200', '300', '400', '500', '700', '900'],
+  display: 'optional',  // swap → optional でレンダーブロッキング解消
+  weight: ['200', '400', '700', '900'],  // 7種 → 4種に絞る
   preload: false,
 })
 

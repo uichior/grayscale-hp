@@ -20,23 +20,24 @@
  *   - aria-hidden="true"、pointer-events: none。座標は window の pointermove/click で取得
  */
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 
 // ──────────────────────────────────────────────
 //  定数・パラメータ（ここを調整するとビジュアルが変わる）
 // ──────────────────────────────────────────────
-const SIM_RESOLUTION = 128       // 速度場解像度
+const SIM_RESOLUTION = 192       // 速度場解像度（UP: 渦の細かさ改善）
 const DYE_RESOLUTION_DESKTOP = 720  // 染料場解像度（デスクトップ）
 const DYE_RESOLUTION_MOBILE = 512   // 染料場解像度（モバイル）
-const JACOBI_ITERATIONS = 20       // 圧力 Jacobi 反復回数
-const VELOCITY_DISSIPATION = 0.98   // 速度場の減衰（小さいほど早く消える）
-const DENSITY_DISSIPATION = 0.990  // 染料の減衰（大きいほど長く漂う）
-const VORTICITY_STRENGTH = 15       // 渦巻き強さ
-const CURL_STRENGTH = 0.3           // curl 計算係数
+const JACOBI_ITERATIONS = 30       // 圧力 Jacobi 反復回数（渦にじみ防止）
+const VELOCITY_DISSIPATION = 0.994  // 速度場の減衰（適度に長生き・蓄積しすぎない）
+const DENSITY_DISSIPATION = 0.997  // 染料の減衰（長く漂わせてたなびき表現）
+const VORTICITY_STRENGTH = 80       // 渦巻き強さ（大幅増：螺旋・カール生成）
+const CURL_STRENGTH = 2.5           // curl 計算係数（渦巻きの押し込み強度）
 
 // 墨の色（FAFAFA 背景に対して暗い）。最大濃度 ~70% で text より薄く
 // orange フラグで墨 or オレンジを区別
-const INK_COLOR    = { r: 0.28, g: 0.28, b: 0.28, orange: false }
+const INK_COLOR    = { r: 0.38, g: 0.38, b: 0.38, orange: false }  // 芯の濃度（pow補正で縁が薄くなる）
 const ORANGE_COLOR = { r: 0.40, g: 0.25, b: 0.0,  orange: true  }
 
 const AUTO_DROP_INTERVAL_MIN = 8000   // 自動ドロップ最短間隔 ms
@@ -168,7 +169,9 @@ const vorticityFragSrc = `
     float B = texture2D(u_curl, v_uv - vec2(0.0, u_texelSize.y)).x;
     float C = texture2D(u_curl, v_uv).x;
     vec2 force = 0.5 * vec2(abs(T) - abs(B), abs(R) - abs(L));
-    force /= length(force) + 0.0001;
+    // 正規化しすぎると渦の強度が失われる → 弱い正規化で勾配の大きさを保持
+    float len = length(force);
+    force = len > 0.0001 ? force / (len * 0.15 + 0.0001) : vec2(0.0);
     force *= u_curlStrength * C;
     vec2 vel = texture2D(u_velocity, v_uv).xy;
     gl_FragColor = vec4(vel + force * u_dt, 0.0, 1.0);
@@ -202,11 +205,14 @@ const displayFragSrc = `
     vec4 dye = texture2D(u_dye, v_uv);
     // 背景 #FAFAFA = (0.98, 0.98, 0.98)。墨は暗い色として dye をオーバーレイ
     vec3 bg = vec3(0.98, 0.98, 0.98);
-    // dye.xyz はすでに暗い色なので、そのまま乗算（dye が 0 なら bg、1なら純黒に近い）
-    // 墨: 最大濃度 55%（文字(純黒)の下に従う）
-    vec3 col = mix(bg, vec3(0.0), clamp(dye.x * 2.0, 0.0, 0.55));
-    // オレンジ: 控えめに max 45%
-    col = mix(col, vec3(1.0, 0.30, 0.0), clamp(dye.y * 2.0, 0.0, 0.45));
+    // 墨: 芯を濃く・縁を薄く（pow でコントラスト強調）→ 濃淡グラデーション
+    // 最大濃度 55%（文字(純黒)の下に従う）
+    float inkRaw = clamp(dye.x * 2.8, 0.0, 1.0);
+    float ink = clamp(pow(inkRaw, 0.65) * 0.55, 0.0, 0.55);  // pow<1 で縁を広げ芯を保持
+    vec3 col = mix(bg, vec3(0.02, 0.02, 0.02), ink);
+    // オレンジ: 控えめに max 40%
+    float orgRaw = clamp(dye.y * 2.8, 0.0, 1.0);
+    col = mix(col, vec3(1.0, 0.28, 0.0), clamp(pow(orgRaw, 0.65) * 0.40, 0.0, 0.40));
     gl_FragColor = vec4(col, 1.0);
   }
 `
@@ -270,13 +276,18 @@ export function InkCanvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
   // クリーンアップ用 ref
   const cleanupRef = useRef<(() => void) | null>(null)
+  // フォールバック表示フラグ（reduced-motion or WebGL 失敗時）
+  const [useFallback, setUseFallback] = useState(false)
 
   useEffect(() => {
     // SSR ガード（念のため）
     if (typeof window === 'undefined') return
 
-    // prefers-reduced-motion ガード
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    // prefers-reduced-motion ガード → 静止画フォールバック
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setUseFallback(true)
+      return
+    }
 
     const canvas = canvasRef.current
     if (!canvas) return
@@ -303,9 +314,13 @@ export function InkCanvas() {
           preserveDrawingBuffer: false,
         }) as WebGLRenderingContext | null
       } catch (_) {
+        setUseFallback(true)
         return
       }
-      if (!gl) return
+      if (!gl) {
+        setUseFallback(true)
+        return
+      }
 
       const GL = gl  // TypeScript の null-narrowing 用
 
@@ -409,11 +424,12 @@ export function InkCanvas() {
       const dyeResObj = getSimRes(dyeRes)
 
       // ── FBO 生成 ──
+      // curl/divergence/pressure も half_float で精度UP → ブロックギザギザ解消
       const velocityFBO  = createDoubleFBO(simRes.w, simRes.h, GL.RGBA, GL.RGBA, halfFloatType, filterType)
       const dyeFBO       = createDoubleFBO(dyeResObj.w, dyeResObj.h, GL.RGBA, GL.RGBA, halfFloatType, filterType)
-      const divergenceFBO = createFBO(simRes.w, simRes.h, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, GL.NEAREST)
-      const curlFBO       = createFBO(simRes.w, simRes.h, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, GL.NEAREST)
-      const pressureFBO  = createDoubleFBO(simRes.w, simRes.h, GL.RGBA, GL.RGBA, GL.UNSIGNED_BYTE, GL.NEAREST)
+      const divergenceFBO = createFBO(simRes.w, simRes.h, GL.RGBA, GL.RGBA, halfFloatType, GL.NEAREST)
+      const curlFBO       = createFBO(simRes.w, simRes.h, GL.RGBA, GL.RGBA, halfFloatType, filterType)  // LINEAR で渦を滑らか
+      const pressureFBO  = createDoubleFBO(simRes.w, simRes.h, GL.RGBA, GL.RGBA, halfFloatType, filterType)
 
       if (!velocityFBO || !dyeFBO || !divergenceFBO || !curlFBO || !pressureFBO) return
 
@@ -477,8 +493,8 @@ export function InkCanvas() {
         clickCount++
         const color = clickCount % 10 === 0 ? ORANGE_COLOR : INK_COLOR
         // radius: exp(-d²/r) の r。大きいほど広く滲む
-        // large: 0.008 → UV空間で sqrt(0.008)≈0.09幅 (9%)。720px×9%≈65px
-        const radius = large ? 0.008 : 0.004
+        // large: 0.003 → 芯を細くして、vorticity で外に引き伸ばす
+        const radius = large ? 0.003 : 0.0015
         splat(x, y, 0, 0, color, 0.00001, radius)
       }
 
@@ -526,11 +542,12 @@ export function InkCanvas() {
         lastX = x; lastY = y
 
         const speed = Math.sqrt(dx * dx + dy * dy)
-        if (speed < 0.0005) return  // 微小移動は無視
+        if (speed < 0.0002) return  // 微小移動は無視
 
-        const velScale = 500
-        // マウス軌跡: 細い筆跡 dyeRadius=0.0015
-        splat(x, y, dx * velScale, dy * velScale, INK_COLOR, 0.0002, 0.0015)
+        const velScale = 2200  // 速度強めで染料を強く引き伸ばす（触手状たなびき）
+        // マウス軌跡: 極細dye（現状の1/3）・velocity強で引き伸ばし効果
+        // velRadius: 0.0005（点状）→ vorticity で巻かれて螺旋になる
+        splat(x, y, dx * velScale, dy * velScale, INK_COLOR, 0.0005, 0.0004)
       }
 
       function onPointerClick(e: MouseEvent) {
@@ -538,8 +555,8 @@ export function InkCanvas() {
         if (!ok) return
         clickCount++
         const color = clickCount % 10 === 0 ? ORANGE_COLOR : INK_COLOR
-        // クリック: 大きめの一滴 dyeRadius=0.012
-        splat(x, y, 0, 0, color, 0.0001, 0.012)
+        // クリック: 芯は細くして濃度高く（渦で外に引き伸ばされてグラデーション）
+        splat(x, y, 0, 0, color, 0.0001, 0.005)
       }
 
       function onTouchStart(e: TouchEvent) {
@@ -725,6 +742,21 @@ export function InkCanvas() {
       else clearTimeout(riceId)
     }
   }, [])
+
+  // prefers-reduced-motion または WebGL 非対応 → 静止画フォールバック
+  if (useFallback) {
+    return (
+      <Image
+        src="/ink-static.webp"
+        alt=""
+        aria-hidden="true"
+        fill
+        style={{ objectFit: 'cover', pointerEvents: 'none', opacity: 0.9 }}
+        priority={false}
+        loading="lazy"
+      />
+    )
+  }
 
   return (
     <canvas
