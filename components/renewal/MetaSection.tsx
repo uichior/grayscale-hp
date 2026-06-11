@@ -137,18 +137,14 @@ export function MetaSection() {
               Meta — このサイトについて
             </p>
 
-            {/* メインヘッドライン（泣き別れ防止: 各文節を inline-block で折り返し禁止） */}
+            {/* メインヘッドライン（泣き別れ防止: 各文節を inline-block で折り返し禁止、span間に空白が入らないよう連結） */}
             <h2
               className="meta-headline font-display font-black text-ink tracking-ja-tight leading-[1.1] mb-10 sm:mb-12"
               style={{
                 fontSize: 'clamp(1.75rem, 5vw, 4.5rem)',
                 opacity: 0,
               }}
-            >
-              <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>このサイトも、</span>
-              <br />
-              <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>自分たちでつくった。</span>
-            </h2>
+            ><span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>このサイトも、</span><br /><span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>自分たちで</span><span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>つくった。</span></h2>
 
             {/* サブコピー1（常体に統一） */}
             <p

@@ -208,7 +208,7 @@ tailwind.config.js ← CSS変数をTailwindトークンとして拡張済み
 - [x] **ContactSection** — 4項目フォーム（名前・会社・メール・相談内容）・バリデーション・submit状態管理・直接連絡先表示
 - [x] **RenewalFooter** — 確定情報全項目・巨大ワードマーク背景・SNSリンク・ミッション・黒背景で締め
 - [x] カスタムカーソル（`components/renewal/CustomCursor.tsx` 新規作成・_app.tsx に組み込み）
-- [ ] OGP 画像の作成（`public/og.png`）— パス指定のみ完了（実画像は別途生成が必要）
+- [x] OGP 画像の作成（`public/og.png`）— 1200×630 PNG（35KB）を生成・配置済み（ヒーローの3行タイポスクリーンショット）
 - [ ] モバイルレスポンシブ確認・調整
 - [x] `prefers-reduced-motion` 全コンポーネントでの対応確認（全 useGSAP ブロックで確認済み）
 - [ ] Lighthouse スコア計測・最適化
@@ -445,12 +445,34 @@ public/grid.svg           （使用箇所なし）
 
 ### 残課題
 
-- `public/og.png` の実画像生成（パス指定は完了）
 - Lighthouse スコア計測・最適化
 - モバイルレスポンシブ最終確認
 - `public/kaizen-labo.html` の扱い（星さん判断）
 - ProofSection 実数値差し替え（星さん確認）
 - ContactSection フォーム送信エンドポイント実装
+
+---
+
+## 12. 最終走者エージェント 仕上げ完了メモ（2026-06-11）
+
+### 対応内容
+
+1. **MetaSection 見出し字間アーティファクト修正**
+   - `<h2>` 内の span を隙間なく連結（JSX改行由来の空白を排除）
+   - 「自分たちでつくった。」を「自分たちで」と「つくった。」に文節分割（inline-block × 2）
+   - 「このサイトも、」の span は独立した行（`<br />`の前）として維持
+
+2. **OG画像生成 (`public/og.png`)**
+   - Playwright（headless:false）で `http://localhost:3000/` を 1200×900 viewport で撮影
+   - アニメーション完了後（4秒待機）にナビ・スクロールインジケーターを非表示にしてクロップ
+   - `clip: { x:0, y:0, width:1200, height:630 }` で正確な OG サイズに切り出し
+   - 仕様: 1200×630 px / PNG / 35KB / 「選ぶ。導く。つくる。」3行タイポ＋SELECT/GUIDE/BUILDラベル＋オレンジシグナル丸が映り込む
+   - SEO メタ（`og:image: https://www.grayscale.jp/og.png`）はすでに宣言済みのため変更不要
+
+3. **掃除**
+   - `git checkout -- package.json package-lock.json` で Playwright インストール差分をリセット
+   - `npm run build` 通過確認（型エラーゼロ・静的ページ生成3件）
+   - grayscale-hp の next dev プロセスを停止
 
 ---
 
