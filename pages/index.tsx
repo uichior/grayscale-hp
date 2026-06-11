@@ -21,19 +21,33 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>株式会社Grayscale | 代理店 × コンサル × 開発</title>
+        <title>株式会社Grayscale | 選ぶ。導く。つくる。— SaaS代理店 × 伴走コンサル × 自社開発</title>
         <meta
           name="description"
-          content="現場10年のDX経験と自社開発力を持つ唯一無二の存在。SaaS選定から導入・定着・自社開発まで一気通貫で伴走する株式会社Grayscale。"
+          content="製造業10年のDX実践知見を持つ代表が、SaaS選定・導入伴走・システム自社開発を一気通貫で担う唯一無二のパートナー。作れる会社が選ぶから、本物のSaaSをご提供します。"
         />
-        <meta property="og:title" content="株式会社Grayscale | 代理店 × コンサル × 開発" />
+        {/* OGP */}
+        <meta property="og:title" content="株式会社Grayscale | 選ぶ。導く。つくる。— SaaS代理店 × 伴走コンサル × 自社開発" />
         <meta
           property="og:description"
-          content="「作れる会社が選ぶSaaSだから、本物。」現場10年のDX知見と開発力で、選定から定着まで一気通貫でご支援します。"
+          content="製造業10年のDX実践知見を持つ代表が、SaaS選定・導入伴走・システム自社開発を一気通貫で担う唯一無二のパートナー。作れる会社が選ぶから、本物のSaaSをご提供します。"
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.grayscale.jp" />
+        <meta property="og:image" content="https://www.grayscale.jp/og.png" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta property="og:site_name" content="株式会社Grayscale" />
+        <meta property="og:locale" content="ja_JP" />
+        {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="株式会社Grayscale | 選ぶ。導く。つくる。— SaaS代理店 × 伴走コンサル × 自社開発" />
+        <meta
+          name="twitter:description"
+          content="製造業10年のDX実践知見を持つ代表が、SaaS選定・導入伴走・システム自社開発を一気通貫で担う唯一無二のパートナー。作れる会社が選ぶから、本物のSaaSをご提供します。"
+        />
+        <meta name="twitter:image" content="https://www.grayscale.jp/og.png" />
+        {/* 基本 */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
         <link rel="canonical" href="https://www.grayscale.jp" />

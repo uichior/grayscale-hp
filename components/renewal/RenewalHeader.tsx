@@ -31,8 +31,7 @@ function scrollToSection(href: string) {
   if (!el) return
 
   // Lenis グローバルインスタンスを取得（SmoothScroll が window に expose していない場合はフォールバック）
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const lenis = (window as any).__lenis
+  const lenis = window.__lenis
   if (lenis && typeof lenis.scrollTo === 'function') {
     lenis.scrollTo(el, { offset: -80, duration: 1.2, easing: (t: number) => 1 - Math.pow(1 - t, 4) })
   } else {

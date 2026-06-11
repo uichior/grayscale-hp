@@ -2,6 +2,7 @@ import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
 import { Inter, Noto_Sans_JP } from 'next/font/google'
 import { SmoothScroll } from '@/components/renewal/SmoothScroll'
+import { CustomCursor } from '@/components/renewal/CustomCursor'
 
 /**
  * Inter — 欧文見出し・本文（variable font、weight 100–900）
@@ -26,6 +27,7 @@ const notoSansJP = Noto_Sans_JP({
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${inter.variable} ${notoSansJP.variable}`}>
+      <CustomCursor />
       <SmoothScroll>
         <Component {...pageProps} />
       </SmoothScroll>

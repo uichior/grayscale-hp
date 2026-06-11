@@ -39,12 +39,10 @@ export function RenewalFooter() {
   const scrollTo = (href: string) => {
     if (typeof window === 'undefined') return
     if (href.startsWith('#')) {
-      const el = document.querySelector(href)
+      const el = document.querySelector<HTMLElement>(href)
       if (el) {
         // Lenis 経由でスムーススクロール（window.__lenis があれば）
-        const lenis = (window as unknown as Record<string, unknown>).__lenis as
-          | { scrollTo: (target: Element, opts?: Record<string, unknown>) => void }
-          | undefined
+        const lenis = window.__lenis
         if (lenis?.scrollTo) {
           lenis.scrollTo(el, { offset: -80 })
         } else {

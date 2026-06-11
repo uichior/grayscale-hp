@@ -61,6 +61,17 @@
     background-color: var(--color-ink);
     color: var(--color-paper);
   }
+
+  /* ── Focus-visible: モノトーンデザインでもキーボードフォーカスが見える ── */
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+  }
+
+  /* 黒背景セクション（bg-ink）内はフォーカスリングを白に反転 */
+  .bg-ink :focus-visible {
+    outline-color: var(--color-paper);
+  }
 }
 
 /* ─── Utilities ───────────────────────────────────────────────────────────── */

@@ -117,10 +117,11 @@ function ContactForm() {
 
         {/* 名前 */}
         <div>
-          <label className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
-            NAME — お名前 <span style={{ color: 'var(--color-signal)' }}>*</span>
+          <label htmlFor="contact-name" className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
+            NAME — お名前 <span style={{ color: 'var(--color-signal)' }} aria-label="必須">*</span>
           </label>
           <input
+            id="contact-name"
             type="text"
             value={formData.name}
             onChange={set('name')}
@@ -129,16 +130,19 @@ function ContactForm() {
             style={inputStyle}
             disabled={status === 'submitting'}
             autoComplete="name"
+            aria-required="true"
+            aria-describedby={errors.name ? 'contact-name-error' : undefined}
           />
-          {errors.name && <ErrorMessage msg={errors.name} />}
+          {errors.name && <ErrorMessage id="contact-name-error" msg={errors.name} />}
         </div>
 
         {/* 会社名 */}
         <div>
-          <label className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
+          <label htmlFor="contact-company" className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
             COMPANY — 会社名
           </label>
           <input
+            id="contact-company"
             type="text"
             value={formData.company}
             onChange={set('company')}
@@ -152,10 +156,11 @@ function ContactForm() {
 
         {/* メール */}
         <div>
-          <label className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
-            MAIL — メールアドレス <span style={{ color: 'var(--color-signal)' }}>*</span>
+          <label htmlFor="contact-email" className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
+            MAIL — メールアドレス <span style={{ color: 'var(--color-signal)' }} aria-label="必須">*</span>
           </label>
           <input
+            id="contact-email"
             type="email"
             value={formData.email}
             onChange={set('email')}
@@ -164,24 +169,29 @@ function ContactForm() {
             style={inputStyle}
             disabled={status === 'submitting'}
             autoComplete="email"
+            aria-required="true"
+            aria-describedby={errors.email ? 'contact-email-error' : undefined}
           />
-          {errors.email && <ErrorMessage msg={errors.email} />}
+          {errors.email && <ErrorMessage id="contact-email-error" msg={errors.email} />}
         </div>
 
         {/* 相談内容 */}
         <div>
-          <label className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
-            MESSAGE — ご相談内容 <span style={{ color: 'var(--color-signal)' }}>*</span>
+          <label htmlFor="contact-message" className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
+            MESSAGE — ご相談内容 <span style={{ color: 'var(--color-signal)' }} aria-label="必須">*</span>
           </label>
           <textarea
+            id="contact-message"
             value={formData.message}
             onChange={set('message')}
             placeholder="どんな初期段階のご相談でも歓迎します。&#10;「SaaSを検討したい」「今の業務を整理したい」など気軽にご記入ください。"
             className={`${inputBase} resize-none`}
             style={{ ...inputStyle, minHeight: '8rem' }}
             disabled={status === 'submitting'}
+            aria-required="true"
+            aria-describedby={errors.message ? 'contact-message-error' : undefined}
           />
-          {errors.message && <ErrorMessage msg={errors.message} />}
+          {errors.message && <ErrorMessage id="contact-message-error" msg={errors.message} />}
         </div>
 
         {/* 送信ボタン */}
@@ -221,12 +231,14 @@ function ContactForm() {
   )
 }
 
-function ErrorMessage({ msg }: { msg: string }) {
+function ErrorMessage({ id, msg }: { id?: string; msg: string }) {
   return (
     <p
+      id={id}
       className="mt-2 label-mono"
       style={{ color: 'var(--color-signal)', fontSize: '0.6rem', letterSpacing: '0.08em' }}
       role="alert"
+      aria-live="polite"
     >
       {msg}
     </p>
