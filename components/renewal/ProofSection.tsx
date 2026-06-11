@@ -171,8 +171,8 @@ function StatCard({ stat, index }: { stat: StatItem; index: number }) {
         {stat.value}
       </span>
 
-      {/* 数字 */}
-      <div className="flex items-baseline gap-1 mb-3" aria-label={`${stat.value}${stat.suffix}`}>
+      {/* 数字 — role="img" でスクリーンリーダー向けラベルを付与（aria-label はロール付き要素にのみ有効） */}
+      <div className="flex items-baseline gap-1 mb-3" role="img" aria-label={`${stat.value}${stat.suffix}`}>
         {stat.prefix && (
           <span
             className="font-display font-black text-gs-500 leading-none"
@@ -212,7 +212,7 @@ function StatCard({ stat, index }: { stat: StatItem; index: number }) {
       {/* 注釈 */}
       {stat.note && (
         <p
-          className="label-mono text-gs-700"
+          className="label-mono text-gs-400"
           style={{ fontSize: '0.6rem', letterSpacing: '0.08em', lineHeight: 1.6 }}
         >
           {stat.note}
@@ -341,7 +341,7 @@ export function ProofSection() {
         {/* ── ヘッダー ── */}
         <div className="mb-16 sm:mb-20">
           <p
-            className="proof-eyebrow label-mono text-gs-500 mb-8"
+            className="proof-eyebrow label-mono text-gs-400 mb-8"
             style={{ opacity: 0 }}
           >
             Numbers — 実績
@@ -368,7 +368,7 @@ export function ProofSection() {
         {/* ── 匿名事例 ── */}
         <div className="mb-20 sm:mb-28">
           <p
-            className="label-mono text-gs-500 mb-8"
+            className="label-mono text-gs-400 mb-8"
             style={{ fontSize: '0.65rem', letterSpacing: '0.12em' }}
           >
             Case Studies — 導入事例（匿名）
@@ -419,14 +419,14 @@ function SaasBlock() {
     <div ref={ref}>
       <div className="flex items-center gap-4 mb-8">
         <p
-          className="label-mono text-gs-500"
+          className="label-mono text-gs-400"
           style={{ fontSize: '0.65rem', letterSpacing: '0.12em' }}
         >
           取り扱いSaaS — Partner Solutions
         </p>
         {/* TODO(星さん確認): ブランドガイドライン確認後、logoAvailable=true にしてロゴ画像に差し替え */}
         <span
-          className="label-mono text-gs-700 border border-gs-800 px-2 py-0.5"
+          className="label-mono text-gs-400 border border-gs-700 px-2 py-0.5"
           style={{ fontSize: '0.55rem', letterSpacing: '0.08em' }}
         >
           ロゴ表示は許諾確認後
@@ -453,7 +453,7 @@ function SaasBlock() {
               {saas.name}
             </p>
             <span
-              className="label-mono text-gs-700 group-hover:text-gs-500 transition-colors"
+              className="label-mono text-gs-400 group-hover:text-gs-200 transition-colors"
               style={{ fontSize: '0.55rem', letterSpacing: '0.1em', lineHeight: 1.5 }}
             >
               {saas.category}
@@ -463,7 +463,7 @@ function SaasBlock() {
       </div>
 
       <p
-        className="mt-4 label-mono text-gs-700"
+        className="mt-4 label-mono text-gs-400"
         style={{ fontSize: '0.6rem', letterSpacing: '0.08em' }}
       >
         ※ 上記以外のSaaSについてもご相談ください。お客様の課題に合わせて最適なツールをご提案します。

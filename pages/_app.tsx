@@ -15,15 +15,16 @@ const inter = Inter({
 
 /**
  * Noto Sans JP — 日本語（weight 100–900）
- * display: optional で初回レンダーをブロックしない。
- * preload: false でリソースヒントを出さない（LCP 改善）
- * 使用ウェイトを絞る（200/400/700/900 の4種のみ）
+ * display: swap でフォント未着時はシステムフォントで描画し、
+ * 読み込み完了後に置換。タイポグラフィ主役サイトのため optional は不採用。
+ * 使用ウェイトを絞る（200/400/500/700/900 の5種）
+ * ※ 500: ヒーロー「導く。」/ ValuesSection jaLabel で fontWeight:500 指定あり
  */
 const notoSansJP = Noto_Sans_JP({
   subsets: ['latin'],
   variable: '--font-noto-var',
-  display: 'optional',  // swap → optional でレンダーブロッキング解消
-  weight: ['200', '400', '700', '900'],  // 7種 → 4種に絞る
+  display: 'swap',
+  weight: ['200', '400', '500', '700', '900'],
   preload: false,
 })
 

@@ -81,7 +81,7 @@ export function RenewalFooter() {
           {/* ── ミッション + ロゴ ── */}
           <div className="mb-16 sm:mb-20 border-b border-gs-800 pb-12 sm:pb-16">
             <p
-              className="label-mono text-gs-700 mb-5"
+              className="label-mono text-gs-400 mb-5"
               style={{ fontSize: '0.6rem', letterSpacing: '0.12em' }}
             >
               Mission
@@ -109,7 +109,7 @@ export function RenewalFooter() {
                 Grayscale
               </p>
               <p
-                className="font-ja font-light text-gs-500 tracking-ja-normal leading-[1.8]"
+                className="font-ja font-light text-gs-400 tracking-ja-normal leading-[1.8]"
                 style={{ fontSize: 'clamp(0.8125rem, 1.1vw, 0.9375rem)' }}
               >
                 代理店 × コンサル × 開発を<br />
@@ -120,7 +120,7 @@ export function RenewalFooter() {
             {/* 会社概要 */}
             <div>
               <p
-                className="label-mono text-gs-700 mb-5"
+                className="label-mono text-gs-400 mb-5"
                 style={{ fontSize: '0.6rem', letterSpacing: '0.12em' }}
               >
                 Company
@@ -137,7 +137,7 @@ export function RenewalFooter() {
             {/* 連絡先 */}
             <div>
               <p
-                className="label-mono text-gs-700 mb-5"
+                className="label-mono text-gs-400 mb-5"
                 style={{ fontSize: '0.6rem', letterSpacing: '0.12em' }}
               >
                 Contact
@@ -145,7 +145,7 @@ export function RenewalFooter() {
               <div className="space-y-3">
                 <div>
                   <p
-                    className="label-mono text-gs-700 mb-1"
+                    className="label-mono text-gs-400 mb-1"
                     style={{ fontSize: '0.55rem', letterSpacing: '0.1em' }}
                   >
                     TEL
@@ -160,7 +160,7 @@ export function RenewalFooter() {
                 </div>
                 <div>
                   <p
-                    className="label-mono text-gs-700 mb-1"
+                    className="label-mono text-gs-400 mb-1"
                     style={{ fontSize: '0.55rem', letterSpacing: '0.1em' }}
                   >
                     MAIL
@@ -180,7 +180,7 @@ export function RenewalFooter() {
             <div>
               {/* ページナビ */}
               <p
-                className="label-mono text-gs-700 mb-5"
+                className="label-mono text-gs-400 mb-5"
                 style={{ fontSize: '0.6rem', letterSpacing: '0.12em' }}
               >
                 Navigate
@@ -190,7 +190,7 @@ export function RenewalFooter() {
                   <li key={item.label}>
                     <button
                       onClick={() => scrollTo(item.href)}
-                      className="font-display font-light text-gs-500 hover:text-paper transition-colors duration-200 tracking-ja-snug"
+                      className="font-display font-light text-gs-400 hover:text-paper transition-colors duration-200 tracking-ja-snug"
                       style={{ fontSize: 'clamp(0.875rem, 1.2vw, 1rem)' }}
                     >
                       {item.label}
@@ -201,7 +201,7 @@ export function RenewalFooter() {
 
               {/* SNS */}
               <p
-                className="label-mono text-gs-700 mb-4"
+                className="label-mono text-gs-400 mb-4"
                 style={{ fontSize: '0.6rem', letterSpacing: '0.12em' }}
               >
                 Follow
@@ -213,13 +213,13 @@ export function RenewalFooter() {
                       href={s.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="font-display font-light text-gs-500 hover:text-paper transition-colors duration-200"
+                      className="font-display font-light text-gs-400 hover:text-paper transition-colors duration-200"
                       style={{ fontSize: 'clamp(0.8125rem, 1.1vw, 0.9375rem)' }}
                     >
                       {s.label}
                       {'handle' in s && (
                         <span
-                          className="ml-2 label-mono text-gs-700"
+                          className="ml-2 label-mono text-gs-400"
                           style={{ fontSize: '0.55rem' }}
                         >
                           {(s as { handle?: string }).handle}
@@ -236,13 +236,13 @@ export function RenewalFooter() {
           {/* ── ボトムバー ── */}
           <div className="border-t border-gs-800 pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <p
-              className="label-mono text-gs-700"
+              className="label-mono text-gs-400"
               style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}
             >
               © 2026 {COMPANY.nameJa}. All rights reserved.
             </p>
             <p
-              className="label-mono text-gs-800"
+              className="label-mono text-gs-400"
               style={{ fontSize: '0.55rem', letterSpacing: '0.1em' }}
             >
               Built in-house — no agencies, just code.
@@ -261,11 +261,11 @@ export function RenewalFooter() {
 function CompanyRow({ label, value }: { label?: string; value: string }) {
   return (
     <p
-      className="font-ja font-light text-gs-500 tracking-ja-normal leading-[1.7]"
+      className="font-ja font-light text-gs-400 tracking-ja-normal leading-[1.7]"
       style={{ fontSize: 'clamp(0.8125rem, 1.1vw, 0.9375rem)' }}
     >
       {label && (
-        <span className="text-gs-700 mr-2">{label}</span>
+        <span className="text-gs-400 mr-2">{label}</span>
       )}
       {value}
     </p>

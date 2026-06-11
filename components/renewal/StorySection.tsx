@@ -82,7 +82,7 @@ function Beat({ id, beat, statement, statementLine2, statementAccent, body, chil
   }, { scope: ref })
 
   const textColor = dark ? 'text-paper' : 'text-ink'
-  const mutedColor = dark ? 'text-gs-500' : 'text-gs-400'
+  const mutedColor = dark ? 'text-gs-400' : 'text-gs-700'
   const borderColor = dark ? 'border-gs-700' : 'border-gs-100'
 
   return (
@@ -155,7 +155,7 @@ function Beat({ id, beat, statement, statementLine2, statementAccent, body, chil
           <div className="mt-10 sm:mt-14 max-w-2xl story-support" style={{ opacity: 0 }}>
             <p
               className={`font-ja font-light tracking-ja-normal leading-[1.9] ${
-                dark ? 'text-gs-400' : 'text-gs-500'
+                dark ? 'text-gs-400' : 'text-gs-700'
               }`}
               style={{ fontSize: 'clamp(0.9375rem, 1.4vw, 1.0625rem)' }}
             >
@@ -215,7 +215,7 @@ function FlowDiagram() {
         ))}
       </ol>
       <p
-        className="mt-6 label-mono text-gs-700"
+        className="mt-6 label-mono text-gs-400"
         style={{ fontSize: '0.6rem', letterSpacing: '0.12em' }}
       >
         — 一気通貫。どこからでも、最後まで。

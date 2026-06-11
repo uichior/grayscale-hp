@@ -75,7 +75,7 @@ function StackItem({ name, role, index }: { name: string; role: string; index: n
         </span>
       </div>
       <span
-        className="label-mono text-gs-400"
+        className="label-mono text-gs-700"
         style={{ fontSize: '0.6rem', letterSpacing: '0.08em' }}
       >
         {role}
@@ -131,7 +131,7 @@ export function MetaSection() {
           {/* ── 左: コピー ── */}
           <div>
             <p
-              className="meta-eyebrow label-mono text-gs-500 mb-10"
+              className="meta-eyebrow label-mono text-gs-700 mb-10"
               style={{ opacity: 0 }}
             >
               Meta — このサイトについて
@@ -148,7 +148,7 @@ export function MetaSection() {
 
             {/* サブコピー1（常体に統一） */}
             <p
-              className="meta-sub-1 font-ja font-light text-gs-500 tracking-ja-normal leading-[1.9] mb-6"
+              className="meta-sub-1 font-ja font-light text-gs-700 tracking-ja-normal leading-[1.9] mb-6"
               style={{ fontSize: 'clamp(0.9375rem, 1.4vw, 1.0625rem)', maxWidth: '36em', opacity: 0 }}
             >
               外注していない。設計も、コードも、アニメーションも。<br />
@@ -157,7 +157,7 @@ export function MetaSection() {
 
             {/* サブコピー2（常体に統一） */}
             <p
-              className="meta-sub-2 font-ja font-light text-gs-500 tracking-ja-normal leading-[1.9] mb-12"
+              className="meta-sub-2 font-ja font-light text-gs-700 tracking-ja-normal leading-[1.9] mb-12"
               style={{ fontSize: 'clamp(0.9375rem, 1.4vw, 1.0625rem)', maxWidth: '36em', opacity: 0 }}
             >
               つくれる会社が選ぶSaaSだから、本物だ。<br />
@@ -180,7 +180,7 @@ export function MetaSection() {
                 View Source
               </span>
               <span
-                className="label-mono text-gs-400 group-hover:text-signal transition-colors duration-200"
+                className="label-mono text-gs-700 group-hover:text-signal transition-colors duration-200"
                 style={{ fontSize: '0.65rem', letterSpacing: '0.12em' }}
               >
                 github.com/uichior/grayscale-hp ↗
@@ -191,7 +191,7 @@ export function MetaSection() {
           {/* ── 右: 技術スタック ── */}
           <div className="lg:pt-[6.5rem]">
             <p
-              className="label-mono text-gs-500 mb-6"
+              className="label-mono text-gs-700 mb-6"
               style={{ fontSize: '0.65rem', letterSpacing: '0.12em' }}
             >
               Tech Stack
@@ -205,13 +205,13 @@ export function MetaSection() {
             {/* BUILD との呼応 */}
             <div className="mt-10 pt-8 border-t border-gs-100">
               <p
-                className="label-mono text-gs-400 mb-2"
+                className="label-mono text-gs-700 mb-2"
                 style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}
               >
                 03 / BUILD — つくる。
               </p>
               <p
-                className="font-ja font-light text-gs-400 leading-[1.8] tracking-ja-normal"
+                className="font-ja font-light text-gs-700 leading-[1.8] tracking-ja-normal"
                 style={{ fontSize: 'clamp(0.8125rem, 1.1vw, 0.9375rem)' }}
               >
                 足りなければ、つくる。<br />

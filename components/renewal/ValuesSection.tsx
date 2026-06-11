@@ -147,14 +147,15 @@ function ValueBlock({ item, index }: ValueBlockProps) {
           className="value-number-bg select-none leading-none font-display font-black"
           style={{
             fontSize: 'clamp(6rem, 18vw, 14rem)',
-            color: 'var(--color-gray-100)',
+            color: 'var(--color-gray-200)',
             lineHeight: 0.85,
             transition: 'color 0.3s ease',
           }}
           aria-hidden
         >
           <span
-            className="group-hover:text-[color:var(--color-gray-200)] transition-colors duration-300"
+            className="group-hover:text-[color:var(--color-gray-300)] transition-colors duration-300"
+            aria-hidden="true"
           >
             {item.number}
           </span>
@@ -163,7 +164,7 @@ function ValueBlock({ item, index }: ValueBlockProps) {
         {/* ラベル（左下に配置） */}
         <div className="absolute bottom-6 lg:bottom-14 left-0">
           <span
-            className="label-mono text-gs-400"
+            className="label-mono text-gs-700"
             style={{ fontSize: '0.65rem', letterSpacing: '0.14em' }}
           >
             {item.enLabel}
@@ -274,7 +275,7 @@ export function ValuesSection() {
       <div className="max-width-container">
         {/* ── ヘッダー ── */}
         <div className="mb-16 sm:mb-20">
-          <p className="values-eyebrow label-mono text-gs-500 mb-6" style={{ opacity: 0 }}>
+          <p className="values-eyebrow label-mono text-gs-700 mb-6" style={{ opacity: 0 }}>
             What We Do
           </p>
           <div className="overflow-hidden">

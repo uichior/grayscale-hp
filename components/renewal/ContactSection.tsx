@@ -117,7 +117,7 @@ function ContactForm() {
 
         {/* 名前 */}
         <div>
-          <label htmlFor="contact-name" className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
+          <label htmlFor="contact-name" className="label-mono text-gs-400 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
             NAME — お名前 <span style={{ color: 'var(--color-signal)' }} aria-label="必須">*</span>
           </label>
           <input
@@ -138,7 +138,7 @@ function ContactForm() {
 
         {/* 会社名 */}
         <div>
-          <label htmlFor="contact-company" className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
+          <label htmlFor="contact-company" className="label-mono text-gs-400 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
             COMPANY — 会社名
           </label>
           <input
@@ -156,7 +156,7 @@ function ContactForm() {
 
         {/* メール */}
         <div>
-          <label htmlFor="contact-email" className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
+          <label htmlFor="contact-email" className="label-mono text-gs-400 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
             MAIL — メールアドレス <span style={{ color: 'var(--color-signal)' }} aria-label="必須">*</span>
           </label>
           <input
@@ -177,7 +177,7 @@ function ContactForm() {
 
         {/* 相談内容 */}
         <div>
-          <label htmlFor="contact-message" className="label-mono text-gs-500 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
+          <label htmlFor="contact-message" className="label-mono text-gs-400 block mb-2" style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}>
             MESSAGE — ご相談内容 <span style={{ color: 'var(--color-signal)' }} aria-label="必須">*</span>
           </label>
           <textarea
@@ -304,7 +304,7 @@ export function ContactSection() {
           {/* ── 左: 見出し + 連絡先 ── */}
           <div>
             <p
-              className="contact-eyebrow label-mono text-gs-500 mb-10"
+              className="contact-eyebrow label-mono text-gs-400 mb-10"
               style={{ opacity: 0 }}
             >
               Contact — お問い合わせ

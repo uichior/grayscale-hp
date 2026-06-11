@@ -98,7 +98,6 @@ export function RenewalHeader() {
                 key={item.href}
                 onClick={() => handleNavClick(item.href)}
                 className="group flex flex-col items-start text-left cursor-pointer bg-transparent border-none p-0"
-                aria-label={`${item.label} — ${item.labelJa}`}
               >
                 <span
                   className="text-sm font-medium leading-none transition-opacity duration-200 group-hover:opacity-60"
@@ -124,7 +123,7 @@ export function RenewalHeader() {
                 color: '#ffffff',
                 border: '1px solid #ffffff',
               }}
-              aria-label="お問い合わせ"
+              aria-label="Contact お問い合わせ"
             >
               Contact
               <span aria-hidden className="text-xs">→</span>
@@ -139,6 +138,7 @@ export function RenewalHeader() {
             aria-label={menuOpen ? 'メニューを閉じる' : 'メニューを開く'}
           >
             <span
+              aria-hidden="true"
               className={[
                 'block w-6 h-px transition-all duration-300 origin-center',
                 menuOpen ? 'translate-y-[7px] rotate-45 bg-ink' : '',
@@ -146,6 +146,7 @@ export function RenewalHeader() {
               style={{ backgroundColor: menuOpen ? undefined : '#ffffff' }}
             />
             <span
+              aria-hidden="true"
               className={[
                 'block w-6 h-px transition-all duration-300',
                 menuOpen ? 'opacity-0 scale-x-0 bg-ink' : '',
@@ -153,6 +154,7 @@ export function RenewalHeader() {
               style={{ backgroundColor: menuOpen ? undefined : '#ffffff' }}
             />
             <span
+              aria-hidden="true"
               className={[
                 'block w-6 h-px transition-all duration-300 origin-center',
                 menuOpen ? '-translate-y-[7px] -rotate-45 bg-ink' : '',
