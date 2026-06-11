@@ -21,9 +21,9 @@ export function CustomCursor() {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
-    // デスクトップ判定（pointer: fine）
-    const isPointerFine = window.matchMedia('(pointer: fine)').matches
-    if (!isPointerFine) return
+    // pointer: fine AND hover: hover 両方を満たすデバイスのみ（タッチエミュレーション対策）
+    const isDesktopPointer = window.matchMedia('(pointer: fine) and (hover: hover)').matches
+    if (!isDesktopPointer) return
 
     // prefers-reduced-motion を尊重
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -32,6 +32,10 @@ export function CustomCursor() {
     const dot  = dotRef.current
     const ring = ringRef.current
     if (!dot || !ring) return
+
+    // 初期位置を画面外に設定（最初の mousemove まで invisible）
+    gsap.set(dot,  { x: -100, y: -100 })
+    gsap.set(ring, { x: -100, y: -100 })
 
     // GSAP quickTo でリング遅延追従（軽量・60fps）
     const xTo = gsap.quickTo(ring, 'x', { duration: 0.35, ease: 'power3.out' })

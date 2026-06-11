@@ -26,6 +26,7 @@ interface BeatProps {
   id: string
   beat: string
   statement: string
+  statementLine2?: string  // 2行目テキスト（泣き別れ防止用）
   statementAccent?: string // signal カラーで強調する文字（statement末尾）
   body: string
   children?: React.ReactNode
@@ -33,7 +34,7 @@ interface BeatProps {
   isClimax?: boolean
 }
 
-function Beat({ id, beat, statement, statementAccent, body, children, dark, isClimax }: BeatProps) {
+function Beat({ id, beat, statement, statementLine2, statementAccent, body, children, dark, isClimax }: BeatProps) {
   const ref = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
@@ -99,26 +100,55 @@ function Beat({ id, beat, statement, statementAccent, body, children, dark, isCl
         {/* メインステートメント */}
         <div className={`border-t ${borderColor} pt-10 sm:pt-14`}>
           <div
-            className="overflow-hidden"
-            aria-label={statement + (statementAccent ?? '')}
+            aria-label={statement + (statementLine2 ?? '') + (statementAccent ?? '')}
           >
-            <p
-              className={`story-line font-display font-black tracking-ja-tight ${textColor} ${
-                isClimax
-                  ? 'leading-none'
-                  : 'leading-[1.0]'
-              }`}
-              style={{
-                fontSize: isClimax
-                  ? 'clamp(2.5rem, 8vw, 7rem)'
-                  : 'clamp(2rem, 6vw, 5.5rem)',
-              }}
-            >
-              {statement}
-              {statementAccent && (
-                <span style={{ color: 'var(--color-signal)' }}>{statementAccent}</span>
-              )}
-            </p>
+            {/* 1行目 */}
+            <div className="overflow-hidden">
+              <p
+                className={`story-line font-display font-black tracking-ja-tight ${textColor} ${
+                  isClimax
+                    ? 'leading-none'
+                    : 'leading-[1.05]'
+                }`}
+                style={{
+                  fontSize: isClimax
+                    ? 'clamp(2.5rem, 8vw, 7rem)'
+                    : 'clamp(2rem, 6vw, 5.5rem)',
+                }}
+              >
+                <span className="inline-block">
+                  {statement}
+                  {/* statementLine2 がない場合のみ、アクセントをここに付ける */}
+                  {!statementLine2 && statementAccent && (
+                    <span style={{ color: 'var(--color-signal)' }}>{statementAccent}</span>
+                  )}
+                </span>
+              </p>
+            </div>
+            {/* 2行目（泣き別れ防止: 文節単位での改行） */}
+            {statementLine2 && (
+              <div className="overflow-hidden">
+                <p
+                  className={`story-line font-display font-black tracking-ja-tight ${textColor} ${
+                    isClimax
+                      ? 'leading-none'
+                      : 'leading-[1.05]'
+                  }`}
+                  style={{
+                    fontSize: isClimax
+                      ? 'clamp(2.5rem, 8vw, 7rem)'
+                      : 'clamp(2rem, 6vw, 5.5rem)',
+                  }}
+                >
+                  <span className="inline-block">
+                    {statementLine2}
+                    {statementAccent && (
+                      <span style={{ color: 'var(--color-signal)' }}>{statementAccent}</span>
+                    )}
+                  </span>
+                </p>
+              </div>
+            )}
           </div>
 
           {/* サブ本文 */}
@@ -201,7 +231,8 @@ export function StorySection() {
       <Beat
         id="story-beat-1"
         beat="Why Grayscale — 01"
-        statement="ほとんどの代理店は、売って終わる。"
+        statement="ほとんどの代理店は、"
+        statementLine2="売って終わる。"
         dark={false}
         body="ツールを提案して、契約して、サポートページのURLを渡して終わり。それが業界の標準だった。現場に定着するかどうかは、お客さん任せで。"
       />

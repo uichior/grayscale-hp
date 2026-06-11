@@ -354,7 +354,7 @@ export function ProofSection() {
             }}
           >
             現場でつくった、<br />
-            <span className="text-gs-500 font-light">数字という名の実績。</span>
+            <span className="text-gs-500 font-light">数字がある。</span>
           </h2>
         </div>
 

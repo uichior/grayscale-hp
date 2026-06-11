@@ -129,17 +129,17 @@ export function HeroSection() {
       ref={containerRef}
       className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-paper"
     >
-      {/* ── 背景: 極薄グレーの十字罫線 (方眼ではなく単線) ── */}
+      {/* ── 背景: 極細ヘアライン（縦2本+横3本、方眼の既視感を排除） ── */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
         style={{
           backgroundImage: `
-            linear-gradient(var(--color-gray-100) 1px, transparent 1px),
-            linear-gradient(90deg, var(--color-gray-100) 1px, transparent 1px)
+            linear-gradient(var(--color-gray-200) 1px, transparent 1px),
+            linear-gradient(90deg, var(--color-gray-200) 1px, transparent 1px)
           `,
-          backgroundSize: '120px 120px',
-          opacity: 0.35,
+          backgroundSize: '480px 320px',
+          opacity: 0.08,
         }}
       />
 
@@ -179,14 +179,14 @@ export function HeroSection() {
                 className="flex items-baseline gap-3 sm:gap-5"
               >
                 <span
-                  className="font-display tracking-ja-tight text-ink"
+                  className="font-ja tracking-ja-tight text-ink"
                   style={{
                     fontWeight: 200,
                     fontSize: 'clamp(3.5rem, 12vw, 11rem)',
                     lineHeight: 0.95,
                   }}
                 >
-                  選ぶ。
+                  選ぶ<span style={{ fontWeight: 700, fontSize: '0.72em', verticalAlign: 'baseline' }}>。</span>
                 </span>
                 <span className="label-mono text-gs-400 self-end pb-[0.2em] hidden sm:inline-block">
                   SELECT
@@ -201,14 +201,14 @@ export function HeroSection() {
                 className="flex items-baseline gap-3 sm:gap-5"
               >
                 <span
-                  className="font-display tracking-ja-tight text-ink"
+                  className="font-ja tracking-ja-tight text-ink"
                   style={{
                     fontWeight: 500,
                     fontSize: 'clamp(3.5rem, 12vw, 11rem)',
                     lineHeight: 0.95,
                   }}
                 >
-                  導く。
+                  導く<span style={{ fontWeight: 700, fontSize: '0.72em', verticalAlign: 'baseline' }}>。</span>
                 </span>
                 <span className="label-mono text-gs-400 self-end pb-[0.2em] hidden sm:inline-block">
                   GUIDE
@@ -223,7 +223,7 @@ export function HeroSection() {
                 className="flex items-baseline gap-3 sm:gap-5"
               >
                 <span
-                  className="font-display tracking-ja-tight"
+                  className="font-ja tracking-ja-tight"
                   style={{
                     fontWeight: 900,
                     fontSize: 'clamp(3.5rem, 12vw, 11rem)',
@@ -231,7 +231,7 @@ export function HeroSection() {
                     color: 'var(--color-ink)',
                   }}
                 >
-                  つくる<span style={{ color: 'var(--color-signal)' }}>。</span>
+                  つくる<span style={{ color: 'var(--color-signal)', fontWeight: 900, fontSize: '0.72em', verticalAlign: 'baseline' }}>。</span>
                 </span>
                 <span className="label-mono text-gs-400 self-end pb-[0.2em] hidden sm:inline-block">
                   BUILD

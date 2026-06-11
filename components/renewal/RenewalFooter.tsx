@@ -90,7 +90,10 @@ export function RenewalFooter() {
               className="font-display font-light text-gs-400 tracking-ja-normal leading-[1.8]"
               style={{ fontSize: 'clamp(0.9375rem, 1.6vw, 1.125rem)', maxWidth: '42em' }}
             >
-              {COMPANY.mission}
+              {/* 泣き別れ防止: 文節wrapで「共に成長して／いく。」を防ぐ */}
+              <span className="inline-block">製造業で10年間かけて培ったDX体験を、</span>
+              <span className="inline-block">圧倒的なスピードと低価格でお届けし、</span>
+              <span className="inline-block">共に成長していく。</span>
             </p>
           </div>
 

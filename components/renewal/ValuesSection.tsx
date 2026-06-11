@@ -173,11 +173,14 @@ function ValueBlock({ item, index }: ValueBlockProps) {
 
       {/* ─ 右カラム: コンテンツ ─ */}
       <div className="value-content pt-6 lg:pt-14 pb-14 sm:pb-20 lg:pl-8 xl:pl-12 border-t lg:border-t-0 lg:border-l border-gs-100">
-        {/* ヒーローとの呼応: jaLabel */}
+        {/* ヒーローとの呼応: jaLabel（ウェイトグラデーション: 01=200, 02=500, 03=900） */}
         <p
-          className="font-display font-light text-gs-300 tracking-ja-tight mb-3 leading-none select-none"
+          className="font-ja text-gs-300 tracking-ja-tight mb-3 leading-none select-none"
           aria-hidden
-          style={{ fontSize: 'clamp(1rem, 2vw, 1.375rem)' }}
+          style={{
+            fontSize: 'clamp(1rem, 2vw, 1.375rem)',
+            fontWeight: index === 0 ? 200 : index === 1 ? 500 : 900,
+          }}
         >
           {item.jaLabel}
         </p>
@@ -275,14 +278,19 @@ export function ValuesSection() {
             What We Do
           </p>
           <div className="overflow-hidden">
+            {/* ウェイトグラデーション: ヒーローと呼応（200→500→900） */}
             <h2
-              className="values-heading font-display font-black text-ink tracking-ja-tight leading-[1.0]"
+              className="values-heading font-ja tracking-ja-tight leading-[1.0]"
               style={{
                 fontSize: 'clamp(2rem, 5.5vw, 4.5rem)',
                 opacity: 0,
+                color: 'var(--color-ink)',
               }}
+              aria-label="選ぶ。導く。つくる。"
             >
-              選ぶ。導く。つくる。
+              <span style={{ fontWeight: 200 }}>選ぶ。</span>
+              <span style={{ fontWeight: 500 }}>導く。</span>
+              <span style={{ fontWeight: 900 }}>つくる。</span>
             </h2>
           </div>
         </div>

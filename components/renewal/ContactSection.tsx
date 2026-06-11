@@ -254,13 +254,20 @@ export function ContactSection() {
     const el = containerRef.current
     if (!el) return
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced) return
 
     const eyebrow  = el.querySelector<HTMLElement>('.contact-eyebrow')
     const heading  = el.querySelector<HTMLElement>('.contact-heading')
     const subtext  = el.querySelector<HTMLElement>('.contact-subtext')
     const contacts = el.querySelector<HTMLElement>('.contact-info')
     const formEl   = el.querySelector<HTMLElement>('.contact-form-wrapper')
+
+    // prefers-reduced-motion: 即時表示
+    if (prefersReduced) {
+      ;[eyebrow, heading, subtext, contacts, formEl].forEach(t => {
+        if (t) { t.style.opacity = '1'; t.style.transform = 'none' }
+      })
+      return
+    }
 
     const left  = [eyebrow, heading, subtext, contacts].filter(Boolean) as HTMLElement[]
     const right = [formEl].filter(Boolean) as HTMLElement[]
@@ -271,7 +278,8 @@ export function ContactSection() {
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: el,
-        start: 'top 78%',
+        // 余裕を持って早めにトリガー（85%に変更）
+        start: 'top 85%',
         toggleActions: 'play none none none',
       },
     })
@@ -303,14 +311,15 @@ export function ContactSection() {
             </p>
 
             <h2
-              className="contact-heading font-display font-black text-paper tracking-ja-tight leading-[1.0] mb-8 sm:mb-10"
+              className="contact-heading font-display font-black text-paper tracking-ja-tight leading-[1.1] mb-8 sm:mb-10"
               style={{
-                fontSize: 'clamp(2rem, 5.5vw, 4.5rem)',
+                fontSize: 'clamp(1.75rem, 5vw, 4.5rem)',
                 opacity: 0,
               }}
             >
-              まずは、話を<br />
-              聞かせてください。
+              <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>まずは、話を</span>
+              <br />
+              <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>聞かせてください。</span>
             </h2>
 
             <p
@@ -354,14 +363,14 @@ function ContactItem({ label, display, href }: { label: string; display: string;
   return (
     <div className="flex items-baseline gap-4">
       <span
-        className="label-mono text-gs-700 flex-shrink-0"
+        className="label-mono text-gs-400 flex-shrink-0"
         style={{ fontSize: '0.6rem', letterSpacing: '0.12em', minWidth: '2.5rem' }}
       >
         {label}
       </span>
       <a
         href={href}
-        className="font-display font-light text-gs-300 hover:text-paper transition-colors duration-200 tracking-ja-snug"
+        className="font-display font-light text-paper hover:text-gs-300 transition-colors duration-200 tracking-ja-snug"
         style={{ fontSize: 'clamp(0.875rem, 1.4vw, 1.0625rem)' }}
       >
         {display}

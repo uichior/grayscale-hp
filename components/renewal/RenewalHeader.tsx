@@ -6,9 +6,10 @@ import { useState, useEffect, useCallback } from 'react'
  * RenewalHeader
  *
  * - 固定（fixed）。左: ワードマーク「Grayscale」、右: ナビ + CTA
- * - 初期: 透明背景
- * - スクロール後: backdrop-blur + 細いボーダー
- * - SP: ハンバーガー → フルスクリーンオーバーレイ（ESC / リンク / 外部クリックで閉じる）
+ * - mix-blend-mode: difference で黒白両背景に対応
+ *   → ヘッダーのテキスト・ボーダーを白にして blend: difference を適用
+ *   → 白背景上では黒く、黒背景上では白く自動反転
+ * - SP フルスクリーンオーバーレイ: 不透明背景なので blend を解除（通常描画）
  * - アンカーリンク: Lenis の scrollTo を使用（なければネイティブ smooth scroll フォールバック）
  */
 
@@ -40,16 +41,7 @@ function scrollToSection(href: string) {
 }
 
 export function RenewalHeader() {
-  const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-
-  // スクロール検知
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 48)
-    handleScroll()
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   // メニュー開閉でスクロールロック
   useEffect(() => {
@@ -79,19 +71,21 @@ export function RenewalHeader() {
 
   return (
     <>
+      {/* ── mix-blend-mode: difference ヘッダー ── */}
+      {/* メニューが開いている時は blend を解除（不透明オーバーレイと干渉するため） */}
       <header
-        className={[
-          'fixed top-0 left-0 right-0 z-50 transition-all duration-300',
-          scrolled
-            ? 'backdrop-blur-md border-b border-gs-100 bg-paper/80'
-            : 'bg-transparent border-b border-transparent',
-        ].join(' ')}
+        className="fixed top-0 left-0 right-0 z-50"
+        style={{
+          mixBlendMode: menuOpen ? 'normal' : 'difference',
+        }}
       >
         <div className="max-width-container mx-auto section-padding flex items-center justify-between h-16 sm:h-[72px]">
           {/* ── ワードマーク ── */}
+          {/* blend: difference なので白文字で指定（白背景上→黒反転、黒背景上→白反転） */}
           <a
             href="/"
-            className="font-display font-bold text-ink text-lg sm:text-xl tracking-tight hover:opacity-70 transition-opacity duration-200 select-none"
+            className="font-display font-bold text-lg sm:text-xl tracking-tight hover:opacity-70 transition-opacity duration-200 select-none"
+            style={{ color: '#ffffff' }}
             aria-label="Grayscale — ホームに戻る"
           >
             Grayscale
@@ -106,10 +100,16 @@ export function RenewalHeader() {
                 className="group flex flex-col items-start text-left cursor-pointer bg-transparent border-none p-0"
                 aria-label={`${item.label} — ${item.labelJa}`}
               >
-                <span className="text-sm font-medium text-gs-500 group-hover:text-ink transition-colors duration-200 leading-none">
+                <span
+                  className="text-sm font-medium leading-none transition-opacity duration-200 group-hover:opacity-60"
+                  style={{ color: '#ffffff' }}
+                >
                   {item.label}
                 </span>
-                <span className="label-mono text-gs-400 group-hover:text-gs-500 transition-colors duration-200 mt-0.5">
+                <span
+                  className="label-mono transition-opacity duration-200 group-hover:opacity-40 mt-0.5"
+                  style={{ color: '#ffffff' }}
+                >
                   {item.labelJa}
                 </span>
               </button>
@@ -118,8 +118,12 @@ export function RenewalHeader() {
             {/* CTA */}
             <button
               onClick={() => handleNavClick('#contact')}
-              className="ml-2 inline-flex items-center gap-1.5 border border-ink text-ink text-sm font-medium font-display
-                         px-5 py-2 hover:bg-ink hover:text-paper transition-colors duration-200 cursor-pointer bg-transparent"
+              className="ml-2 inline-flex items-center gap-1.5 text-sm font-medium font-display
+                         px-5 py-2 transition-opacity duration-200 hover:opacity-60 cursor-pointer bg-transparent"
+              style={{
+                color: '#ffffff',
+                border: '1px solid #ffffff',
+              }}
               aria-label="お問い合わせ"
             >
               Contact
@@ -136,27 +140,31 @@ export function RenewalHeader() {
           >
             <span
               className={[
-                'block w-6 h-px bg-ink transition-all duration-300 origin-center',
-                menuOpen ? 'translate-y-[7px] rotate-45' : '',
+                'block w-6 h-px transition-all duration-300 origin-center',
+                menuOpen ? 'translate-y-[7px] rotate-45 bg-ink' : '',
               ].join(' ')}
+              style={{ backgroundColor: menuOpen ? undefined : '#ffffff' }}
             />
             <span
               className={[
-                'block w-6 h-px bg-ink transition-all duration-300',
-                menuOpen ? 'opacity-0 scale-x-0' : '',
+                'block w-6 h-px transition-all duration-300',
+                menuOpen ? 'opacity-0 scale-x-0 bg-ink' : '',
               ].join(' ')}
+              style={{ backgroundColor: menuOpen ? undefined : '#ffffff' }}
             />
             <span
               className={[
-                'block w-6 h-px bg-ink transition-all duration-300 origin-center',
-                menuOpen ? '-translate-y-[7px] -rotate-45' : '',
+                'block w-6 h-px transition-all duration-300 origin-center',
+                menuOpen ? '-translate-y-[7px] -rotate-45 bg-ink' : '',
               ].join(' ')}
+              style={{ backgroundColor: menuOpen ? undefined : '#ffffff' }}
             />
           </button>
         </div>
       </header>
 
       {/* ── SP フルスクリーンオーバーレイメニュー ── */}
+      {/* 不透明背景なので blend を解除（normal 描画） */}
       <div
         role="dialog"
         aria-modal="true"
@@ -167,6 +175,7 @@ export function RenewalHeader() {
             ? 'opacity-100 pointer-events-auto'
             : 'opacity-0 pointer-events-none',
         ].join(' ')}
+        style={{ mixBlendMode: 'normal' }}
       >
         <nav className="space-y-1" aria-label="モバイルナビゲーション">
           {NAV_ITEMS.map((item, i) => (

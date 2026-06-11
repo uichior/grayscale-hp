@@ -137,33 +137,34 @@ export function MetaSection() {
               Meta — このサイトについて
             </p>
 
-            {/* メインヘッドライン */}
+            {/* メインヘッドライン（泣き別れ防止: 各文節を inline-block で折り返し禁止） */}
             <h2
-              className="meta-headline font-display font-black text-ink tracking-ja-tight leading-[1.0] mb-10 sm:mb-12"
+              className="meta-headline font-display font-black text-ink tracking-ja-tight leading-[1.1] mb-10 sm:mb-12"
               style={{
-                fontSize: 'clamp(2.25rem, 6.5vw, 5.5rem)',
+                fontSize: 'clamp(1.75rem, 5vw, 4.5rem)',
                 opacity: 0,
               }}
             >
-              このサイトも、<br />
-              自分たちでつくった。
+              <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>このサイトも、</span>
+              <br />
+              <span style={{ display: 'inline-block', whiteSpace: 'nowrap' }}>自分たちでつくった。</span>
             </h2>
 
-            {/* サブコピー1 */}
+            {/* サブコピー1（常体に統一） */}
             <p
               className="meta-sub-1 font-ja font-light text-gs-500 tracking-ja-normal leading-[1.9] mb-6"
               style={{ fontSize: 'clamp(0.9375rem, 1.4vw, 1.0625rem)', maxWidth: '36em', opacity: 0 }}
             >
-              外注していません。設計も、コードも、アニメーションも。<br />
-              Next.js + GSAP + Lenis で組み上げた、Grayscale自身の技術力の証明です。
+              外注していない。設計も、コードも、アニメーションも。<br />
+              Next.js + GSAP + Lenis で組み上げた、Grayscale自身の技術力の証明だ。
             </p>
 
-            {/* サブコピー2 */}
+            {/* サブコピー2（常体に統一） */}
             <p
               className="meta-sub-2 font-ja font-light text-gs-500 tracking-ja-normal leading-[1.9] mb-12"
               style={{ fontSize: 'clamp(0.9375rem, 1.4vw, 1.0625rem)', maxWidth: '36em', opacity: 0 }}
             >
-              つくれる会社が選ぶSaaSだから、本物です。<br />
+              つくれる会社が選ぶSaaSだから、本物だ。<br />
               提案するツールの何がいいかを、自分たちで実証しながら選んでいる。
             </p>
 

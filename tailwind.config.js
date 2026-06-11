@@ -48,8 +48,8 @@ module.exports = {
         ja:      ['var(--font-noto-var)', 'Noto Sans JP', 'system-ui', 'sans-serif'],
         /* Mono: JetBrains Mono — labels/captions ONLY */
         mono:    ['JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', 'monospace'],
-        /* Display alias (Inter) */
-        display: ['var(--font-inter-var)', 'Inter', 'system-ui', 'sans-serif'],
+        /* Display: Inter → Noto Sans JP フォールバック（日本語グリフのウェイトグラデーション対応） */
+        display: ['var(--font-inter-var)', 'Inter', 'var(--font-noto-var)', 'Noto Sans JP', 'system-ui', 'sans-serif'],
       },
 
       fontSize: {
