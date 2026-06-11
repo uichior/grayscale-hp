@@ -1,17 +1,34 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import Head from 'next/head'
+import { Inter, Noto_Sans_JP } from 'next/font/google'
+import { SmoothScroll } from '@/components/renewal/SmoothScroll'
+
+/**
+ * Inter — 欧文見出し・本文（variable font、weight 100–900）
+ */
+const inter = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter-var',
+  display: 'swap',
+})
+
+/**
+ * Noto Sans JP — 日本語（variable font、weight 100–900）
+ */
+const notoSansJP = Noto_Sans_JP({
+  subsets: ['latin'],
+  variable: '--font-noto-var',
+  display: 'swap',
+  weight: ['100', '300', '400', '500', '700', '900'],
+  preload: false,
+})
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <>
-      <Head>
-        <title>株式会社Grayscale | 茨城県水戸市のDXコンサルティング</title>
-        <meta name="description" content="株式会社Grayscaleは茨城県水戸市を拠点に、地域企業のDX推進をサポートします。システム開発、業務管理アプリの製作・販売を通じて、お客様の課題解決に貢献します。" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Component {...pageProps} />
-    </>
+    <div className={`${inter.variable} ${notoSansJP.variable}`}>
+      <SmoothScroll>
+        <Component {...pageProps} />
+      </SmoothScroll>
+    </div>
   )
 }

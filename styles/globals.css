@@ -1,9 +1,94 @@
-/* Webフォントは_document.tsxで読み込み */
+/* ─── Design Tokens ───────────────────────────────────────────────────────── */
+:root {
+  /* Palette */
+  --color-ink:     #0A0A0A;   /* ほぼ黒 */
+  --color-paper:   #FAFAFA;   /* ほぼ白 */
+  --color-signal:  #FF4D00;   /* シグナルオレンジ — 差し色1色のみ */
+
+  /* Grayscale steps */
+  --color-gray-950: #0A0A0A;
+  --color-gray-900: #171717;
+  --color-gray-700: #404040;
+  --color-gray-500: #737373;
+  --color-gray-400: #A3A3A3;
+  --color-gray-200: #D4D4D4;
+  --color-gray-100: #E5E5E5;
+  --color-gray-50:  #FAFAFA;
+
+  /* Fluid type scale */
+  --font-size-hero:    clamp(3.5rem,  12vw, 11rem);
+  --font-size-display: clamp(2.5rem,   7vw,  6rem);
+  --font-size-heading: clamp(1.75rem,  4vw,  3rem);
+  --font-size-subhead: clamp(1.25rem,  2vw,  1.75rem);
+  --font-size-body:    clamp(1rem,     1.2vw, 1.125rem);
+  --font-size-sm:      clamp(0.875rem, 1vw,  0.9375rem);
+  --font-size-xs:      0.75rem;
+
+  /* Section spacing */
+  --spacing-section-sm: clamp(4rem,  8vw,  8rem);   /* py-32相当 */
+  --spacing-section-md: clamp(6rem, 10vw, 12rem);   /* py-48相当 */
+  --spacing-section-lg: clamp(8rem, 14vw, 16rem);
+
+  /* Font references (variable fonts injected via next/font in _app.tsx) */
+  --font-inter:      var(--font-inter-var, 'Inter', system-ui, sans-serif);
+  --font-noto:       var(--font-noto-var, 'Noto Sans JP', system-ui, sans-serif);
+  --font-sans:       var(--font-inter-var, 'Inter', var(--font-noto-var, 'Noto Sans JP'), system-ui, sans-serif);
+}
+
+/* ─── Tailwind ────────────────────────────────────────────────────────────── */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ─── Base ────────────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    /* Lenis が scroll-behavior を制御するため CSS smooth scroll は外す */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-ink);
+    color: var(--color-paper);
+  }
+}
+
+/* ─── Utilities ───────────────────────────────────────────────────────────── */
 @layer utilities {
+  /* Fluid type */
+  .text-hero    { font-size: var(--font-size-hero);    line-height: 0.95; }
+  .text-display { font-size: var(--font-size-display); line-height: 1.0;  }
+  .text-heading { font-size: var(--font-size-heading); line-height: 1.1;  }
+  .text-subhead { font-size: var(--font-size-subhead); line-height: 1.3;  }
+  .text-body    { font-size: var(--font-size-body);    line-height: 1.75; }
+  .text-sm-fluid { font-size: var(--font-size-sm);    line-height: 1.5;  }
+
+  /* Japanese heading letter-spacing */
+  .tracking-ja-tight   { letter-spacing: -0.04em; }
+  .tracking-ja-snug    { letter-spacing: -0.03em; }
+  .tracking-ja-normal  { letter-spacing: -0.02em; }
+
+  /* Signal color utilities */
+  .text-signal   { color: var(--color-signal); }
+  .bg-signal     { background-color: var(--color-signal); }
+  .border-signal { border-color: var(--color-signal); }
+
+  /* Section spacing */
+  .py-section-sm { padding-top: var(--spacing-section-sm); padding-bottom: var(--spacing-section-sm); }
+  .py-section-md { padding-top: var(--spacing-section-md); padding-bottom: var(--spacing-section-md); }
+  .py-section-lg { padding-top: var(--spacing-section-lg); padding-bottom: var(--spacing-section-lg); }
+
+  /* Scrollbar hide */
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
@@ -13,99 +98,39 @@
   }
 }
 
+/* ─── Components ──────────────────────────────────────────────────────────── */
 @layer components {
+  .section-padding {
+    @apply px-6 sm:px-8 lg:px-12;
+  }
+
+  .max-width-container {
+    @apply max-w-7xl mx-auto;
+  }
+
+  /* Label / caption — モノスペースはここだけ */
+  .label-mono {
+    font-family: 'JetBrains Mono', 'Consolas', monospace;
+    @apply text-xs uppercase tracking-widest;
+  }
+
+  /* Animate keyframes */
   .animate-scroll {
     animation: scroll 120s linear infinite;
   }
-  
+
   .animate-fade-in {
     animation: fade-in 0.6s ease-out;
   }
 }
 
+/* ─── Keyframes ───────────────────────────────────────────────────────────── */
 @keyframes scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-66.666%); /* 3分の2移動して最初に戻る */
-  }
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-66.666%); }
 }
 
 @keyframes fade-in {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@layer base {
-  html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
-  body {
-    @apply text-gray-900 bg-white;
-  }
-  
-  ::selection {
-    @apply bg-gray-900 text-white;
-  }
-}
-
-@layer components {
-  .section-padding {
-    @apply px-6 sm:px-8 lg:px-12;
-  }
-  
-  .max-width-container {
-    @apply max-w-7xl mx-auto;
-  }
-  
-  .gradient-text {
-    @apply bg-gradient-to-r from-gray-600 to-gray-900 bg-clip-text text-transparent;
-  }
-  
-  .gradient-text-light {
-    @apply bg-gradient-to-r from-gray-400 to-gray-700 bg-clip-text text-transparent;
-  }
-  
-  .glass-effect {
-    @apply backdrop-blur-md bg-white/90 border border-gray-200/50;
-  }
-  
-  .glass-dark {
-    @apply backdrop-blur-md bg-gray-900/90 border border-gray-700/50;
-  }
-  
-  .button-primary {
-    @apply px-6 py-3 bg-gradient-to-r from-gray-900 to-gray-700 text-white rounded-xl font-medium 
-           hover:from-gray-800 hover:to-gray-600 transform hover:scale-105 transition-all duration-200 
-           shadow-lg hover:shadow-dark;
-  }
-  
-  .button-secondary {
-    @apply px-6 py-3 border-2 border-gray-800 text-gray-800 rounded-xl font-medium 
-           hover:bg-gray-100 hover:border-gray-900 transform hover:scale-105 transition-all duration-200;
-  }
-  
-  .button-white {
-    @apply px-6 py-3 bg-white text-gray-900 rounded-xl font-medium 
-           hover:bg-gray-100 transform hover:scale-105 transition-all duration-200 
-           shadow-lg hover:shadow-xl;
-  }
-  
-  .card-hover {
-    @apply hover:shadow-dark hover:-translate-y-1 transition-all duration-300;
-  }
-  
-  .gradient-gray-radial {
-    background: radial-gradient(ellipse at center, rgba(0,0,0,0.1) 0%, transparent 70%);
-  }
+  0%   { opacity: 0; transform: translateY(20px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
