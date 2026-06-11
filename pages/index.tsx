@@ -130,7 +130,7 @@ export default function Home() {
         <footer className="border-t border-gray-200 px-4 py-8">
           <div className="mx-auto max-w-7xl text-center">
             <p className="font-mono text-sm text-gray-500">
-              © 2025 Grayscale. All rights reserved.
+              © 2026 Grayscale. All rights reserved.
             </p>
           </div>
         </footer>
