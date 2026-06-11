@@ -3,6 +3,7 @@
 import { useRef, useEffect } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { InkCanvas } from './InkCanvas'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -129,7 +130,10 @@ export function HeroSection() {
       ref={containerRef}
       className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-paper"
     >
-      {/* ── 背景: 極細ヘアライン（縦2本+横3本、方眼の既視感を排除） ── */}
+      {/* ── 背景レイヤー1: WebGL 墨流しシミュレーション ── */}
+      <InkCanvas />
+
+      {/* ── 背景レイヤー2: 極細ヘアライン（墨の下に薄く情報の層として残す） ── */}
       <div
         aria-hidden
         className="pointer-events-none absolute inset-0"
@@ -139,7 +143,7 @@ export function HeroSection() {
             linear-gradient(90deg, var(--color-gray-200) 1px, transparent 1px)
           `,
           backgroundSize: '480px 320px',
-          opacity: 0.08,
+          opacity: 0.06,
         }}
       />
 

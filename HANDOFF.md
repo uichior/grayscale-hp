@@ -211,6 +211,7 @@ tailwind.config.js ← CSS変数をTailwindトークンとして拡張済み
 - [x] OGP 画像の作成（`public/og.png`）— 1200×630 PNG（35KB）を生成・配置済み（ヒーローの3行タイポスクリーンショット）
 - [ ] モバイルレスポンシブ確認・調整
 - [x] `prefers-reduced-motion` 全コンポーネントでの対応確認（全 useGSAP ブロックで確認済み）
+- [x] **InkCanvas（墨流しWebGL流体シミュレーション）** — HeroSection の背景レイヤーに追加済み（第8走者）
 - [ ] Lighthouse スコア計測・最適化
 
 ---
@@ -490,3 +491,57 @@ public/grid.svg           （使用箇所なし）
 | 6 | `public/kaizen-labo.html` | 旧サービスページ（存続中） | 新サイト統合 or 削除を星さん判断 |
 | 7 | ContactSection フォーム送信エンドポイント | シミュレートのみ | `/api/contact` 等のバックエンド実装が必要な場合は別途実装 |
 | 8 | フッター 郵便番号 `〒310-0852` | 水戸市笠原町の一般的な番号を付与 | 正確な郵便番号を確認して修正 |
+
+---
+
+## 13. 第8走者エージェント 墨流しWebGL完了メモ（2026-06-11）
+
+### InkCanvas 実装詳細
+
+**ファイル**: `components/renewal/InkCanvas.tsx`
+**統合先**: `components/renewal/HeroSection.tsx`（背景レイヤー1として絶対配置）
+
+### シミュレーション構成
+
+- **アルゴリズム**: stable fluids（GPU Gems 3, Ch.38）、Pavel Dobryakovの WebGL-Fluid-Simulation(MIT) を参考に自前実装
+- **パイプライン**: curl → vorticity → advect velocity → divergence → pressure Jacobi×20 → gradient subtract → advect dye
+- **FBO構成**: velocity (128px), dye (720px desk / 512px mobile) の double FBO
+- **拡張**: OES_texture_half_float（対応時）/ UNSIGNED_BYTE（フォールバック）
+
+### ビジュアルパラメータ（`InkCanvas.tsx` 先頭定数で調整可能）
+
+```
+SIM_RESOLUTION       = 128       // 速度場解像度
+DYE_RESOLUTION_DESKTOP = 720     // 染料場解像度
+VELOCITY_DISSIPATION = 0.98      // 速度の減衰（大→とろみ感UP）
+DENSITY_DISSIPATION  = 0.990     // 墨の減衰（大→長く漂う、小→早く消える）
+VORTICITY_STRENGTH   = 15        // 渦巻き強さ
+INK_COLOR.r          = 0.28      // 墨の濃度（大→濃い）
+displayFragSrc: clamp max 0.55   // 最大表示濃度（文字は純黒=1.0 > 0.55で勝つ）
+autoDrop large radius = 0.008    // 自動ドロップ半径（大→広い滲み）
+```
+
+### 墨チャンネル分離（displayFragSrcのシェーダー）
+
+- `dye.x` = 墨濃度（モノクロ）→ bg(#FAFAFA) から黒へ補間、max 55%
+- `dye.y` = オレンジ濃度 → bg から vec3(1.0,0.30,0.0) へ補間、max 45%
+- 10回に1回クリックで ORANGE_COLOR が使用される
+
+### アクセシビリティ・パフォーマンスガード
+
+- SSR: null return（サーバー側未実行）
+- `prefers-reduced-motion: reduce`: null return（起動しない）
+- WebGL失敗/contextlost: 安全にnull化（エラーthrowなし）
+- init遅延: `requestIdleCallback`（フォールバックは setTimeout 200ms）
+- IntersectionObserver: ヒーロー外でRAF停止
+- visibilitychange: タブ非表示時にRAF停止
+- アンマウント時: RAF・GL全リソース・全listenerを完全破棄
+- canvas: `aria-hidden="true"`, `pointer-events: none`
+
+### 確認済みスクリーンショット
+
+```
+/tmp/grayscale-qa/ink/01_after_load.png   — ロード3秒後（自動ドロップ確認）
+/tmp/grayscale-qa/ink/02_after_mouse.png  — マウス移動後の墨軌跡
+/tmp/grayscale-qa/ink/03_after_click.png  — クリック2回後
+```
