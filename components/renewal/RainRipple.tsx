@@ -112,13 +112,17 @@ float rippleField(vec2 uv, float t) {
 }
 
 void main() {
+  // 正方形 SIM を画面に貼るとき、画面が縦長/横長だと波紋が楕円化する。
+  // 短辺基準で中央を切り出す（cover）サンプル座標にして真円を保つ。
+  vec2 hUv = (vUv - 0.5) / uAspect + 0.5;
+
   // 高さの傾き（法線）を中心差分で取得。係数で増幅して可視化。
-  float hl = dec(texture2D(uHeight, vUv + vec2(-uTexel.x, 0.0)));
-  float hr = dec(texture2D(uHeight, vUv + vec2( uTexel.x, 0.0)));
-  float hu = dec(texture2D(uHeight, vUv + vec2(0.0,  uTexel.y)));
-  float hd = dec(texture2D(uHeight, vUv + vec2(0.0, -uTexel.y)));
+  float hl = dec(texture2D(uHeight, hUv + vec2(-uTexel.x, 0.0)));
+  float hr = dec(texture2D(uHeight, hUv + vec2( uTexel.x, 0.0)));
+  float hu = dec(texture2D(uHeight, hUv + vec2(0.0,  uTexel.y)));
+  float hd = dec(texture2D(uHeight, hUv + vec2(0.0, -uTexel.y)));
   if (uDebug > 0.5) {
-    float hc = dec(texture2D(uHeight, vUv));
+    float hc = dec(texture2D(uHeight, hUv));
     gl_FragColor = vec4(vec3(0.5 + hc * 4.0), 1.0); // 0付近=灰, 波=明暗
     return;
   }
