@@ -61,7 +61,7 @@ const SCRUB_LINES = [
   { text: '提案書を出し、契約を取り、サポートのURLを渡して——仕事は終わり。', climax: false },
   { text: '定着するかどうかは、現場まかせ。', climax: false },
   { text: 'それが、この業界の「当たり前」だった。', climax: false },
-  { text: 'Grayscaleは、その反対側から来た。', climax: true },
+  { text: 'Grayscaleは、その反対側からはじめる。', climax: true },
 ]
 
 export function GrayscaleLP() {
@@ -141,8 +141,8 @@ export function GrayscaleLP() {
                   key={i}
                   data-scrub-line
                   style={l.climax
-                    ? { opacity: 0.13, marginTop: 30, color: '#C9AC79', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(30px, 5.2vw, 70px)', lineHeight: 1.4, letterSpacing: '0.02em', fontFeatureSettings: "'palt'" } as CSSProperties
-                    : { opacity: 0.13, fontFamily: MINCHO, fontWeight: 500, fontSize: 'clamp(22px, 3.5vw, 46px)', lineHeight: 1.55, letterSpacing: '0.02em', fontFeatureSettings: "'palt'" } as CSSProperties}
+                    ? { opacity: 0.13, marginTop: 30, color: '#C9AC79', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(30px, 5.2vw, 70px)', lineHeight: 1.4, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'balance', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties
+                    : { opacity: 0.13, fontFamily: MINCHO, fontWeight: 500, fontSize: 'clamp(22px, 3.5vw, 46px)', lineHeight: 1.55, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'pretty', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties}
                 >
                   {l.text}
                 </span>
@@ -157,7 +157,7 @@ export function GrayscaleLP() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(44px, 6vw, 100px)', maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ flex: '0 1 auto', display: 'flex', flexDirection: 'column', gap: 28 }}>
             <p style={{ margin: 0, font: `400 11px/1 ${MONO}`, letterSpacing: '0.2em', color: '#9B7B45' }}>N° 00 — ORIGIN</p>
-            <h2 style={{ margin: 0, writingMode: 'vertical-rl', height: 'clamp(260px, 46vh, 460px)', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(36px, 4.6vw, 64px)', lineHeight: 1.4, letterSpacing: '0.08em', fontFeatureSettings: "'palt'" } as CSSProperties}>現場から、来た。</h2>
+            <h2 style={{ margin: 0, writingMode: 'vertical-rl', height: 'clamp(260px, 46vh, 460px)', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(36px, 4.6vw, 64px)', lineHeight: 1.4, letterSpacing: '0.08em', fontFeatureSettings: "'palt'" } as CSSProperties}>現場でしか、わからない経験がある。</h2>
           </div>
           <div style={{ flex: '1 1 420px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 28, justifyContent: 'center' }}>
             <p data-reveal style={{ margin: 0, fontFamily: KAKU, fontSize: 'clamp(14px, 1.35vw, 16px)', lineHeight: 2.2, letterSpacing: '0.04em', color: '#3B362E', textWrap: 'pretty' } as CSSProperties}>代表は、製造業の現場でDXを10年、自分の手でやってきた。ツール選定の失敗も、新しい仕組みを現場に定着させる苦しみも、すべて自分事として経験している。「入れたけど、使われなかった」が何を意味するか、肌でわかっている。</p>
@@ -187,7 +187,7 @@ export function GrayscaleLP() {
         <div data-conv-sticky style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '88px clamp(20px, 5vw, 64px) 36px', boxSizing: 'border-box', textAlign: 'center' }}>
           <div data-conv-head>
             <p style={{ margin: '0 0 18px', font: `400 11px/1 ${MONO}`, letterSpacing: '0.2em', color: '#9B7B45' }}>N° 04 — INTEGRATION</p>
-            <h2 style={{ margin: 0, fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(22px, 3.2vw, 42px)', lineHeight: 1.5, letterSpacing: '0.02em', fontFeatureSettings: "'palt'" } as CSSProperties}>SaaSが増えるほど、現場は混乱する。</h2>
+            <h2 style={{ margin: 0, fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(22px, 3.2vw, 42px)', lineHeight: 1.5, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'balance', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties}>SaaSが増えるほど、現場は混乱する。</h2>
           </div>
           <div data-conv-stage style={{ position: 'relative', flex: 1, width: '100%', minHeight: 0 }}>
             {CHIPS.map((c, i) => (
@@ -197,7 +197,7 @@ export function GrayscaleLP() {
             ))}
           </div>
           <div data-conv-caption style={{ opacity: 0, willChange: 'transform, opacity', maxWidth: 760 }}>
-            <p style={{ margin: 0, fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(22px, 3vw, 38px)', lineHeight: 1.6, letterSpacing: '0.02em', fontFeatureSettings: "'palt'" } as CSSProperties}>増やすのではなく、<span style={{ borderBottom: '2px solid #9B7B45', paddingBottom: 2 }}>整理して、一本化する</span>。</p>
+            <p style={{ margin: 0, fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(22px, 3vw, 38px)', lineHeight: 1.6, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'balance', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties}>増やすのではなく、<span style={{ display: 'inline-block', borderBottom: '2px solid #9B7B45', paddingBottom: 2 }}>整理して、一本化する</span>。</p>
             <p style={{ margin: '20px 0 0', fontFamily: KAKU, fontSize: 'clamp(13px, 1.3vw, 15px)', lineHeight: 2.1, letterSpacing: '0.04em', color: '#544E43', textWrap: 'pretty' } as CSSProperties}>本当に必要なSaaSだけを厳選し、API連携でひとつのポータルに統合する。それでも賄えない専門業務には、専用のツールを開発する。</p>
           </div>
         </div>
@@ -208,9 +208,9 @@ export function GrayscaleLP() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 420px), 1fr))', gap: 'clamp(44px, 5vw, 88px)', maxWidth: 1280, margin: '0 auto', alignItems: 'center' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 26 }}>
             <p data-reveal style={{ margin: 0, font: `400 11px/1 ${MONO}`, letterSpacing: '0.2em', color: '#9B7B45' }}>N° 05 — PROOF</p>
-            <h2 data-reveal style={{ margin: 0, fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(30px, 4.2vw, 56px)', lineHeight: 1.4, letterSpacing: '0.02em', fontFeatureSettings: "'palt'" } as CSSProperties}>このサイトも、<br />私たちが書いた。</h2>
+            <h2 data-reveal style={{ margin: 0, fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(30px, 4.2vw, 56px)', lineHeight: 1.4, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'balance', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties}>サイトもシステムも、一緒につくる。</h2>
             <p data-reveal style={{ margin: 0, maxWidth: '36em', fontFamily: KAKU, fontSize: 'clamp(14px, 1.35vw, 16px)', lineHeight: 2.2, letterSpacing: '0.04em', color: '#544E43', textWrap: 'pretty' } as CSSProperties}>設計も、コードも、アニメーションも、外注していない。代理店でありながら、作る側の人間でもある。だから、ツールの良し悪しを本当の意味で判断できる。</p>
-            <p data-reveal style={{ margin: 0, borderTop: '1px dashed #B6B0A4', paddingTop: 24, fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(18px, 2.1vw, 27px)', lineHeight: 1.7, letterSpacing: '0.02em', color: '#87693A', fontFeatureSettings: "'palt'", textWrap: 'pretty' } as CSSProperties}>「作れる会社が選ぶSaaSは、本物だ」——<br />この一文は、このページの存在が証明している。</p>
+            <p data-reveal style={{ margin: 0, borderTop: '1px dashed #B6B0A4', paddingTop: 24, fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(18px, 2.1vw, 27px)', lineHeight: 1.7, letterSpacing: '0.02em', color: '#87693A', fontFeatureSettings: "'palt'", textWrap: 'pretty', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties}><span style={{ display: 'inline-block' }}>「作れる会社が選ぶSaaSは、本物だ」——</span><span style={{ display: 'inline-block' }}>この一文は、このページの存在が証明している。</span></p>
           </div>
           <div data-type-card data-reveal style={{ background: '#1A1712', borderRadius: 4, padding: 'clamp(22px, 3vw, 34px)', boxShadow: '0 24px 60px -30px rgba(26, 23, 18, 0.45)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, borderBottom: '1px dashed rgba(244, 241, 234, 0.18)', paddingBottom: 14, marginBottom: 20, font: `400 10px/1 ${MONO}`, letterSpacing: '0.18em', color: 'rgba(244, 241, 234, 0.45)' }}>
@@ -246,7 +246,7 @@ function ServiceArticle(props: {
       </div>
       <div style={{ margin: 'auto 0', padding: '40px 0' }}>
         <p style={{ margin: 0, font: `600 clamp(54px, 8.5vw, 122px)/0.98 ${GROTESK}`, letterSpacing: '-0.03em', textTransform: 'uppercase' }}>{props.eng}</p>
-        <h3 style={{ margin: '30px 0 0', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(24px, 3.4vw, 44px)', lineHeight: 1.5, letterSpacing: '0.02em', fontFeatureSettings: "'palt'" } as CSSProperties}>{props.jp}</h3>
+        <h3 style={{ margin: '30px 0 0', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(24px, 3.4vw, 44px)', lineHeight: 1.5, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'balance', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties}>{props.jp}</h3>
         <p style={{ margin: '22px 0 0', maxWidth: '38em', fontFamily: KAKU, fontSize: 'clamp(14px, 1.35vw, 16px)', lineHeight: 2.1, letterSpacing: '0.04em', color: props.descColor || '#544E43', textWrap: 'pretty' } as CSSProperties}>{props.desc}</p>
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-between', borderTop: `1px dashed ${props.footBorder || '#B6B0A4'}`, paddingTop: 16, font: `400 10px/1 ${MONO}`, letterSpacing: '0.18em', color: props.footColor || '#938C7E' }}>
@@ -311,7 +311,7 @@ function ContactArea() {
     <section id="contact" data-screen-label="Contact" style={{ background: '#1A1712', color: '#F4F1EA' }}>
       <div style={{ padding: 'clamp(110px, 18vh, 210px) clamp(20px, 6vw, 88px)', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 30 }}>
         <p data-reveal style={{ margin: 0, font: `400 11px/1 ${MONO}`, letterSpacing: '0.22em', color: '#C9AC79' }}>CONTACT — FREE HEARING</p>
-        <h2 data-reveal style={{ margin: 0, fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(34px, 6.2vw, 82px)', lineHeight: 1.3, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'balance' } as CSSProperties}>まずは、話を<br />聞かせてほしい。</h2>
+        <h2 data-reveal style={{ margin: 0, fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(34px, 6.2vw, 82px)', lineHeight: 1.3, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'balance', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties}>会話から、はじめましょう。</h2>
         <p data-reveal style={{ margin: 0, maxWidth: '36em', fontFamily: KAKU, fontSize: 'clamp(14px, 1.35vw, 16px)', lineHeight: 2.1, letterSpacing: '0.04em', color: 'rgba(244, 241, 234, 0.66)', textWrap: 'pretty' } as CSSProperties}>SaaSの検討を始めたばかりでも、今の業務を整理したいだけでも構いません。初期段階の相談を、歓迎しています。</p>
 
         {!open && status !== 'success' && (
