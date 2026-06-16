@@ -35,7 +35,7 @@ export function SmoothScroll({ children }: SmoothScrollProps) {
 
     lenisRef.current = lenis
 
-    // グローバルに lenis インスタンスを expose（RenewalHeader 等のアンカー scrollTo に使用）
+    // グローバルに lenis インスタンスを expose（GrayscaleLP のアンカー scrollTo に使用）
     window.__lenis = lenis
 
     // Lenis の raf を gsap.ticker に統合（公式推奨パターン）
