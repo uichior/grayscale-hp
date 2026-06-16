@@ -1,37 +1,46 @@
 import '@/styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Inter, Noto_Sans_JP } from 'next/font/google'
+import { Zen_Old_Mincho, Zen_Kaku_Gothic_New, Familjen_Grotesk, Space_Mono } from 'next/font/google'
 import { SmoothScroll } from '@/components/renewal/SmoothScroll'
-import { CustomCursor } from '@/components/renewal/CustomCursor'
 
 /**
- * Inter — 欧文見出し・本文（variable font、weight 100–900）
+ * 新デザイン（Claude Design版）のフォント構成。
+ * - Zen Old Mincho     … ディスプレイ見出しの主役（明朝）
+ * - Zen Kaku Gothic New … 日本語本文
+ * - Familjen Grotesk   … 欧文ディスプレイ・大きな数字
+ * - Space Mono         … ラベル・ロット番号・メタ情報（monospace）
+ * カスタムカーソルと各種スクロール演出は GrayscaleV2 コンポーネント内に内包。
  */
-const inter = Inter({
+const zenMincho = Zen_Old_Mincho({
   subsets: ['latin'],
-  variable: '--font-inter-var',
+  variable: '--font-mincho',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+})
+
+const zenKaku = Zen_Kaku_Gothic_New({
+  subsets: ['latin'],
+  variable: '--font-kaku',
+  display: 'swap',
+  weight: ['300', '400', '500', '700'],
+})
+
+const familjen = Familjen_Grotesk({
+  subsets: ['latin'],
+  variable: '--font-grotesk',
   display: 'swap',
 })
 
-/**
- * Noto Sans JP — 日本語（weight 100–900）
- * display: swap でフォント未着時はシステムフォントで描画し、
- * 読み込み完了後に置換。タイポグラフィ主役サイトのため optional は不採用。
- * 使用ウェイトを絞る（200/400/500/700/900 の5種）
- * ※ 500: ヒーロー「導く。」/ ValuesSection jaLabel で fontWeight:500 指定あり
- */
-const notoSansJP = Noto_Sans_JP({
+const spaceMono = Space_Mono({
   subsets: ['latin'],
-  variable: '--font-noto-var',
+  variable: '--font-mono-dc',
   display: 'swap',
-  weight: ['200', '400', '500', '700', '900'],
-  preload: false,
+  weight: ['400', '700'],
 })
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <div className={`${inter.variable} ${notoSansJP.variable}`}>
-      <CustomCursor />
+    <div className={`${zenMincho.variable} ${zenKaku.variable} ${familjen.variable} ${spaceMono.variable}`}>
       <SmoothScroll>
         <Component {...pageProps} />
       </SmoothScroll>

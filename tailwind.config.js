@@ -42,14 +42,14 @@ module.exports = {
       },
 
       fontFamily: {
-        /* Primary: Inter (variable) for Latin headings/body */
-        sans:    ['var(--font-inter-var)', 'Inter', 'Noto Sans JP', 'system-ui', 'sans-serif'],
-        /* Japanese: Noto Sans JP (variable) */
-        ja:      ['var(--font-noto-var)', 'Noto Sans JP', 'system-ui', 'sans-serif'],
-        /* Mono: JetBrains Mono — labels/captions ONLY */
-        mono:    ['JetBrains Mono', 'Consolas', 'Monaco', 'Courier New', 'monospace'],
-        /* Display: Inter → Noto Sans JP フォールバック（日本語グリフのウェイトグラデーション対応） */
-        display: ['var(--font-inter-var)', 'Inter', 'var(--font-noto-var)', 'Noto Sans JP', 'system-ui', 'sans-serif'],
+        /* 新デザイン（Claude Design版） */
+        mincho:  ['var(--font-mincho)', 'Zen Old Mincho', 'Hiragino Mincho ProN', 'serif'],
+        kaku:    ['var(--font-kaku)', 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'sans-serif'],
+        grotesk: ['var(--font-grotesk)', 'Familjen Grotesk', 'sans-serif'],
+        mono:    ['var(--font-mono-dc)', 'Space Mono', 'monospace'],
+        /* 互換用エイリアス */
+        sans:    ['var(--font-kaku)', 'Zen Kaku Gothic New', 'system-ui', 'sans-serif'],
+        ja:      ['var(--font-kaku)', 'Zen Kaku Gothic New', 'system-ui', 'sans-serif'],
       },
 
       fontSize: {
