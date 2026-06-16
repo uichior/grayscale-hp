@@ -108,7 +108,7 @@ export function GrayscaleLP() {
             <span style={{ display: 'block', overflow: 'hidden' }}><span style={{ display: 'inline-block', animation: 'gsRise 1.05s cubic-bezier(0.22, 1, 0.36, 1) 1.0s both' }}>全部やるから、</span></span>
             <span style={{ display: 'block', overflow: 'hidden' }}><span style={{ display: 'inline-block', animation: 'gsRise 1.05s cubic-bezier(0.22, 1, 0.36, 1) 1.12s both' }}>本物<span style={{ color: '#9B7B45' }}>。</span></span></span>
           </h1>
-          <p style={{ margin: '34px 0 0', maxWidth: '36em', fontFamily: KAKU, fontWeight: 400, fontSize: 'clamp(14px, 1.4vw, 17px)', lineHeight: 2.1, letterSpacing: '0.03em', color: '#544E43', animation: 'gsFade 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.45s both', textWrap: 'pretty' } as CSSProperties}>自分で使って、確かめたSaaSだけを売る。現場に定着するまで、離れない。届かない部分は、自分たちでつくる。——SaaSのセレクトショップ、株式会社Grayscale。</p>
+          <p style={{ margin: '34px 0 0', maxWidth: '36em', fontFamily: KAKU, fontWeight: 400, fontSize: 'clamp(14px, 1.4vw, 17px)', lineHeight: 2.1, letterSpacing: '0.03em', color: '#544E43', animation: 'gsFade 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.45s both', textWrap: 'pretty' } as CSSProperties}>自分で使って、確かめたSaaSだけを売る。現場に定着するまで、離れない。届かない部分は、自分たちでつくる。<br />——SaaSのセレクトショップ、株式会社Grayscale。</p>
         </div>
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, animation: 'gsFade 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.75s both' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 12 }}>
