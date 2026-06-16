@@ -67,12 +67,19 @@ function ContactForm() {
     }
 
     setStatus('submitting')
-    // ─ 送信処理
-    // 旧サイトと同様、現時点では外部エンドポイントなし。
-    // mailto: ベースのフォールバック動線を Contact 欄に別途明示。
-    // API エンドポイント追加時は fetch('/api/contact', ...) に差し替え。
-    await new Promise(resolve => setTimeout(resolve, 1200))
-    setStatus('success')
+    // ─ 送信処理: /api/contact（Resend 経由でメール送信）
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+      if (!res.ok) throw new Error(`status ${res.status}`)
+      setStatus('success')
+    } catch (err) {
+      console.error('[contact] submit failed:', err)
+      setStatus('error')
+    }
   }
 
   const inputBase =

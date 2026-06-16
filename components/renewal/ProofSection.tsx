@@ -11,61 +11,22 @@ gsap.registerPlugin(ScrollTrigger)
  * ProofSection — 実績・数字
  *
  * 「製造業で10年DX」を定量で見せるセクション。
- * 数字は旧サイト内で確認できる実数値がなかったため、
- * 確実に真実と言える数値のみ使い、残りはTODOフラグ付きプレースホルダー。
+ * 確実に真実と言える「現場経験10年」のみを主役の数字として扱う
+ * （平均削減率・月間削減時間の仮置き値は星さん判断により非掲載）。
  *
  * 取り扱いSaaS: ロゴ画像は使わず（ブランドガイドライン確認前）、
  * サービス名タイポグラフィで掲載。ロゴ差し替え可能な構造。
  */
 
 // ─── データ定数 ─────────────────────────────────────────────────────────────
-// TODO(星さん確認): 実数値に差し替えてください
 
-/** 統計数値 */
-const STATS = [
-  {
-    prefix: '',
-    value: 10,
-    suffix: '年',
-    label: '製造業DXの現場経験',
-    note: null,
-    confirmed: true, // 代表・星さんの10年間の現場DX経験（確定）
-  },
-  {
-    prefix: '',
-    value: 50,
-    suffix: '%',
-    label: '平均業務時間削減率',
-    note: '※ 代表の現場経験に基づく平均値', // TODO(星さん確認): 実績データに差し替え
-    confirmed: false,
-  },
-  {
-    prefix: '',
-    value: 40,
-    suffix: 'h',
-    label: '月間削減時間の目安',
-    note: '※ 従業員50名規模の製造業事例ベース', // TODO(星さん確認): 実績事例に差し替え
-    confirmed: false,
-  },
-] as const
-
-/** 匿名事例 — TODO(星さん確認): 実際の導入事例・許諾取得後に差し替え */
-const CASES = [
-  {
-    tag: '製造業A社・従業員50名',
-    industry: '金属部品加工',
-    tool: 'Google Workspace 導入',
-    result: '日報・週次報告のデジタル化で\n月40時間の集計作業を削減',
-    // TODO(星さん確認): 実事例の許可を取って社名・詳細に差し替え
-  },
-  {
-    tag: '製造業B社・従業員120名',
-    industry: '食品加工',
-    tool: 'SmartHR 導入 + 業務フロー再構築',
-    result: '入退社・シフト管理の自動化で\n人事担当者の残業を週10時間削減',
-    // TODO(星さん確認): 実事例の許可を取って社名・詳細に差し替え
-  },
-] as const
+/** 主役の数字 — 確定値のみ（製造業DXの現場経験10年） */
+const HERO_STAT = {
+  prefix: '',
+  value: 10,
+  suffix: '年',
+  label: '製造業DXの現場経験',
+} as const
 
 /** 取り扱いSaaS — ロゴ差し替え可能な構造（ブランドガイドライン確認後） */
 const SAAS_LIST = [
@@ -131,107 +92,15 @@ interface StatItem {
   value: number
   suffix: string
   label: string
-  note: string | null
-  confirmed: boolean
 }
 
-function StatCard({ stat, index }: { stat: StatItem; index: number }) {
-  const { display, triggerRef } = useCountUp(stat.value, { duration: 1.6 + index * 0.2 })
-  const cardRef = useRef<HTMLDivElement>(null)
-
-  useGSAP(() => {
-    const el = cardRef.current
-    if (!el) return
-    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (prefersReduced) return
-
-    gsap.set(el, { y: 28, opacity: 0 })
-    gsap.to(el, {
-      y: 0,
-      opacity: 1,
-      duration: 0.75,
-      ease: 'power3.out',
-      delay: index * 0.12,
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 82%',
-        toggleActions: 'play none none none',
-      },
-    })
-  }, { scope: cardRef })
-
-  return (
-    <div
-      ref={cardRef}
-      className="border-t border-gs-700 pt-8"
-      style={{ opacity: 0 }}
-    >
-      {/* トリガー要素（CountUp Hook 用） */}
-      <span ref={triggerRef as React.RefObject<HTMLSpanElement>} aria-hidden className="sr-only">
-        {stat.value}
-      </span>
-
-      {/* 数字 — role="img" でスクリーンリーダー向けラベルを付与（aria-label はロール付き要素にのみ有効） */}
-      <div className="flex items-baseline gap-1 mb-3" role="img" aria-label={`${stat.value}${stat.suffix}`}>
-        {stat.prefix && (
-          <span
-            className="font-display font-black text-gs-500 leading-none"
-            style={{ fontSize: 'clamp(1.25rem, 2vw, 1.75rem)' }}
-            aria-hidden
-          >
-            {stat.prefix}
-          </span>
-        )}
-        <span
-          className="font-display font-black leading-none"
-          style={{
-            fontSize: 'clamp(3rem, 8vw, 6rem)',
-            color: 'var(--color-signal)',
-          }}
-          aria-hidden
-        >
-          {display}
-        </span>
-        <span
-          className="font-display font-light text-gs-400 leading-none"
-          style={{ fontSize: 'clamp(1.125rem, 2vw, 1.5rem)' }}
-          aria-hidden
-        >
-          {stat.suffix}
-        </span>
-      </div>
-
-      {/* ラベル */}
-      <p
-        className="font-ja font-medium text-paper tracking-ja-snug mb-2"
-        style={{ fontSize: 'clamp(0.9375rem, 1.4vw, 1.0625rem)' }}
-      >
-        {stat.label}
-      </p>
-
-      {/* 注釈 */}
-      {stat.note && (
-        <p
-          className="label-mono text-gs-400"
-          style={{ fontSize: '0.6rem', letterSpacing: '0.08em', lineHeight: 1.6 }}
-        >
-          {stat.note}
-        </p>
-      )}
-    </div>
-  )
-}
-
-// ─── CaseCard ────────────────────────────────────────────────────────────────
-
-interface CaseItem {
-  tag: string
-  industry: string
-  tool: string
-  result: string
-}
-
-function CaseCard({ case: c, index }: { case: CaseItem; index: number }) {
+/**
+ * HeroStat — 主役の数字（現場経験10年）。
+ * 巨大なカウントアップ数字＋右側にリードコピーを添えて、
+ * 数字が1つでも間が持つ横並びレイアウトにする。
+ */
+function HeroStat({ stat }: { stat: StatItem }) {
+  const { display, triggerRef } = useCountUp(stat.value, { duration: 1.8 })
   const ref = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
@@ -240,61 +109,63 @@ function CaseCard({ case: c, index }: { case: CaseItem; index: number }) {
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReduced) return
 
-    gsap.set(el, { y: 24, opacity: 0 })
-    gsap.to(el, {
-      y: 0,
-      opacity: 1,
-      duration: 0.7,
-      ease: 'power2.out',
-      delay: index * 0.15,
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 84%',
-        toggleActions: 'play none none none',
-      },
+    const lead = el.querySelector<HTMLElement>('.stat-lead')
+    gsap.set(el, { y: 28, opacity: 0 })
+    if (lead) gsap.set(lead, { y: 16, opacity: 0 })
+
+    const tl = gsap.timeline({
+      scrollTrigger: { trigger: el, start: 'top 82%', toggleActions: 'play none none none' },
     })
+    tl.to(el, { y: 0, opacity: 1, duration: 0.75, ease: 'power3.out' })
+    if (lead) tl.to(lead, { y: 0, opacity: 1, duration: 0.6, ease: 'power2.out' }, '-=0.4')
   }, { scope: ref })
 
   return (
     <div
       ref={ref}
-      className="border border-gs-700 p-6 sm:p-8 hover:border-gs-500 transition-colors duration-300"
+      className="grid grid-cols-1 md:grid-cols-[auto_1fr] items-center gap-8 md:gap-16 border-t border-gs-700 pt-10 sm:pt-12"
       style={{ opacity: 0 }}
     >
-      {/* タグ */}
-      <div className="flex items-center gap-3 mb-5">
+      {/* トリガー要素（CountUp Hook 用） */}
+      <span ref={triggerRef as React.RefObject<HTMLSpanElement>} aria-hidden className="sr-only">
+        {stat.value}
+      </span>
+
+      {/* 数字 — role="img" でスクリーンリーダー向けラベルを付与 */}
+      <div className="flex items-baseline gap-2" role="img" aria-label={`${stat.value}${stat.suffix}`}>
         <span
-          className="label-mono text-gs-500 px-2 py-1 border border-gs-700"
-          style={{ fontSize: '0.6rem', letterSpacing: '0.1em' }}
+          className="font-display font-black leading-none"
+          style={{ fontSize: 'clamp(5rem, 16vw, 12rem)', color: 'var(--color-signal)' }}
+          aria-hidden
         >
-          {c.tag}
+          {display}
         </span>
         <span
-          className="label-mono text-gs-700"
-          style={{ fontSize: '0.6rem', letterSpacing: '0.08em' }}
+          className="font-display font-light text-gs-400 leading-none"
+          style={{ fontSize: 'clamp(1.5rem, 4vw, 3rem)' }}
+          aria-hidden
         >
-          {c.industry}
+          {stat.suffix}
         </span>
       </div>
 
-      {/* 導入SaaS */}
-      <p
-        className="font-display font-semibold text-gs-300 mb-3 tracking-ja-snug"
-        style={{ fontSize: 'clamp(0.875rem, 1.2vw, 1rem)' }}
-      >
-        {c.tool}
-      </p>
-
-      {/* 結果 */}
-      <p
-        className="font-ja font-light text-paper leading-[1.8] tracking-ja-normal"
-        style={{
-          fontSize: 'clamp(1rem, 1.6vw, 1.125rem)',
-          whiteSpace: 'pre-line',
-        }}
-      >
-        {c.result}
-      </p>
+      {/* リードコピー */}
+      <div className="stat-lead" style={{ opacity: 0 }}>
+        <p
+          className="font-ja font-medium text-paper tracking-ja-snug mb-4"
+          style={{ fontSize: 'clamp(1.125rem, 2vw, 1.5rem)' }}
+        >
+          {stat.label}
+        </p>
+        <p
+          className="font-ja font-light text-gs-400 leading-[1.9] tracking-ja-normal"
+          style={{ fontSize: 'clamp(0.9375rem, 1.4vw, 1.0625rem)', maxWidth: '30em' }}
+        >
+          ツール選定の失敗も、現場に定着させる苦しみも、<br className="hidden sm:block" />
+          すべて自分の手で経験してきた。だから、<br className="hidden sm:block" />
+          「使われないDX」が何を意味するか、腹でわかっている。
+        </p>
+      </div>
     </div>
   )
 }
@@ -358,26 +229,9 @@ export function ProofSection() {
           </h2>
         </div>
 
-        {/* ── Stats ── */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-12 mb-20 sm:mb-28">
-          {STATS.map((stat, i) => (
-            <StatCard key={stat.label} stat={stat} index={i} />
-          ))}
-        </div>
-
-        {/* ── 匿名事例 ── */}
+        {/* ── 主役の数字（現場経験10年） ── */}
         <div className="mb-20 sm:mb-28">
-          <p
-            className="label-mono text-gs-400 mb-8"
-            style={{ fontSize: '0.65rem', letterSpacing: '0.12em' }}
-          >
-            Case Studies — 導入事例（匿名）
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
-            {CASES.map((c, i) => (
-              <CaseCard key={c.tag} case={c} index={i} />
-            ))}
-          </div>
+          <HeroStat stat={HERO_STAT} />
         </div>
 
         {/* ── 取り扱いSaaS ── */}
