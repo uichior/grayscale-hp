@@ -15,7 +15,8 @@ export default function Home() {
         <meta property="og:description" content={DESC} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.grayscale.jp" />
-        <meta property="og:image" content="https://www.grayscale.jp/og.png" />
+        <meta property="og:image" content="https://www.grayscale.jp/og.jpg" />
+        <meta property="og:image:type" content="image/jpeg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:site_name" content="株式会社Grayscale" />
@@ -24,7 +25,7 @@ export default function Home() {
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={TITLE} />
         <meta name="twitter:description" content={DESC} />
-        <meta name="twitter:image" content="https://www.grayscale.jp/og.png" />
+        <meta name="twitter:image" content="https://www.grayscale.jp/og.jpg" />
         {/* 基本 */}
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
