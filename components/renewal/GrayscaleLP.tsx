@@ -138,26 +138,27 @@ export function GrayscaleLP() {
         </div>
       </section>
 
-      {/* Philosophy */}
-      <section id="philosophy" data-screen-label="Philosophy" style={{ background: '#1A1712', color: '#F4F1EA' }}>
-        <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', padding: '17px 0', borderBottom: '1px dashed rgba(244, 241, 234, 0.18)' }}>
+      {/* Philosophy — ヒーロー(黒)の直後を明るいベージュにし、黒→明で
+          セクションの切り替わりを明確にする（黒黒のっぺり対策）。 */}
+      <section id="philosophy" data-screen-label="Philosophy" style={{ background: '#F4F1EA', color: '#1A1712', borderTop: '1px solid rgba(26, 23, 18, 0.1)' }}>
+        <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', padding: '17px 0', borderBottom: '1px dashed rgba(26, 23, 18, 0.18)' }}>
           <div data-marquee-track style={{ display: 'inline-flex', willChange: 'transform' }}>
             {Array.from({ length: 6 }).map((_, i) => (
-              <span key={i} style={{ font: `400 12px/1 ${MONO}`, letterSpacing: '0.26em', color: 'rgba(244, 241, 234, 0.6)', paddingRight: 64 }}>SELECTION — ADOPTION — DEVELOPMENT — INTEGRATION —</span>
+              <span key={i} style={{ font: `400 12px/1 ${MONO}`, letterSpacing: '0.26em', color: 'rgba(26, 23, 18, 0.55)', paddingRight: 64 }}>SELECTION — ADOPTION — DEVELOPMENT — INTEGRATION —</span>
             ))}
           </div>
         </div>
         <div data-scrub-wrap style={{ position: 'relative', height: '330vh' }}>
           <div data-scrub-sticky style={{ position: 'sticky', top: 0, height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '0 clamp(20px, 6vw, 88px)', boxSizing: 'border-box' }}>
-            <p style={{ margin: '0 0 36px', font: `400 11px/1 ${MONO}`, letterSpacing: '0.2em', color: '#938C7E' }}>THE INDUSTRY STANDARD</p>
+            <p style={{ margin: '0 0 36px', font: `400 11px/1 ${MONO}`, letterSpacing: '0.2em', color: '#71695C' }}>THE INDUSTRY STANDARD</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {SCRUB_LINES.map((l, i) => (
                 <span
                   key={i}
                   data-scrub-line
                   style={l.climax
-                    ? { opacity: 0.13, marginTop: 30, color: '#C9AC79', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(30px, 5.2vw, 70px)', lineHeight: 1.4, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'balance', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties
-                    : { opacity: 0.13, fontFamily: MINCHO, fontWeight: 500, fontSize: 'clamp(22px, 3.5vw, 46px)', lineHeight: 1.55, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'pretty', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties}
+                    ? { opacity: 0.13, marginTop: 30, color: '#9B7B45', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(30px, 5.2vw, 70px)', lineHeight: 1.4, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'balance', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties
+                    : { opacity: 0.13, color: '#1A1712', fontFamily: MINCHO, fontWeight: 500, fontSize: 'clamp(22px, 3.5vw, 46px)', lineHeight: 1.55, letterSpacing: '0.02em', fontFeatureSettings: "'palt'", textWrap: 'pretty', wordBreak: 'keep-all', overflowWrap: 'anywhere' } as CSSProperties}
                 >
                   {l.text}
                 </span>
@@ -172,7 +173,9 @@ export function GrayscaleLP() {
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'clamp(44px, 6vw, 100px)', maxWidth: 1280, margin: '0 auto' }}>
           <div style={{ flex: '0 1 auto', display: 'flex', flexDirection: 'column', gap: 28 }}>
             <p style={{ margin: 0, font: `400 11px/1 ${MONO}`, letterSpacing: '0.2em', color: '#9B7B45' }}>N° 00 — ORIGIN</p>
-            <h2 style={{ margin: 0, writingMode: 'vertical-rl', height: 'clamp(260px, 46vh, 460px)', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(36px, 4.6vw, 64px)', lineHeight: 1.4, letterSpacing: '0.08em', fontFeatureSettings: "'palt'" } as CSSProperties}>現場でしか、わからない経験がある。</h2>
+            {/* 縦書き2列固定: 句点位置で改行を明示し、4列に泣き別れするのを防ぐ。
+                高さは長い列（9文字）が収まる範囲に拡張。 */}
+            <h2 style={{ margin: 0, writingMode: 'vertical-rl', height: 'clamp(300px, 58vh, 540px)', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(34px, 4.4vw, 60px)', lineHeight: 1.55, letterSpacing: '0.08em', fontFeatureSettings: "'palt'", wordBreak: 'keep-all' } as CSSProperties}>現場でしか、<br />わからない経験がある。</h2>
           </div>
           <div style={{ flex: '1 1 420px', minWidth: 0, display: 'flex', flexDirection: 'column', gap: 28, justifyContent: 'center' }}>
             <p data-reveal style={{ margin: 0, fontFamily: KAKU, fontSize: 'clamp(14px, 1.35vw, 16px)', lineHeight: 2.2, letterSpacing: '0.04em', color: '#3B362E', textWrap: 'pretty' } as CSSProperties}>代表は、製造業の現場でDXを10年、自分の手でやってきた。ツール選定の失敗も、新しい仕組みを現場に定着させる苦しみも、すべて自分事として経験している。「入れたけど、使われなかった」が何を意味するか、肌でわかっている。</p>

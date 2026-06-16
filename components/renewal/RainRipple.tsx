@@ -43,6 +43,7 @@ uniform sampler2D uPrev;
 uniform sampler2D uCurr;
 uniform vec2 uTexel;
 uniform float uDamp;
+uniform vec2 uDropAspect; // 画面比（長辺/短辺）。雫を潰して打ち、表示で真円にする
 // 雨だれ: 最大 4 滴を同時に打ち込む
 uniform vec3 uDrops[4]; // xy=位置(0-1), z=強さ(<=0 で無効)
 float dec(vec4 c) { return c.r - 0.5; }
@@ -55,11 +56,15 @@ void main() {
   float next = (l + r + u + d) * 0.5 - prev;
   next *= uDamp; // 減衰（波が静まっていく）
 
-  // 雨だれを高さ場に打ち込む（ガウシアンの窪み）
+  // 雨だれを高さ場に打ち込む（ガウシアンの窪み）。
+  // 正方形 SIM が縦長画面に引き伸ばされる分、距離を uDropAspect で
+  // 逆補正して打つ＝表示時に潰れが相殺され画面上で真円になる。
+  // 係数 3000 で窪みを細く＝波紋を小ぶりに（上げるほど小さい）。
   for (int i = 0; i < 4; i++) {
     if (uDrops[i].z > 0.0) {
-      float dist = distance(vUv, uDrops[i].xy);
-      next -= uDrops[i].z * exp(-dist * dist * 1300.0);
+      vec2 diff = (vUv - uDrops[i].xy) * uDropAspect;
+      float dist = length(diff);
+      next -= uDrops[i].z * exp(-dist * dist * 3000.0);
     }
   }
   next = clamp(next, -0.5, 0.5);
@@ -112,17 +117,15 @@ float rippleField(vec2 uv, float t) {
 }
 
 void main() {
-  // 正方形 SIM を画面に貼るとき、画面が縦長/横長だと波紋が楕円化する。
-  // 短辺基準で中央を切り出す（cover）サンプル座標にして真円を保つ。
-  vec2 hUv = (vUv - 0.5) / uAspect + 0.5;
-
   // 高さの傾き（法線）を中心差分で取得。係数で増幅して可視化。
-  float hl = dec(texture2D(uHeight, hUv + vec2(-uTexel.x, 0.0)));
-  float hr = dec(texture2D(uHeight, hUv + vec2( uTexel.x, 0.0)));
-  float hu = dec(texture2D(uHeight, hUv + vec2(0.0,  uTexel.y)));
-  float hd = dec(texture2D(uHeight, hUv + vec2(0.0, -uTexel.y)));
+  // 真円化は SIM 側で雫を画面比に潰して打つ方式（uDropAspect）で行うため、
+  // ここはサンプル座標を素直に vUv のまま使う。
+  float hl = dec(texture2D(uHeight, vUv + vec2(-uTexel.x, 0.0)));
+  float hr = dec(texture2D(uHeight, vUv + vec2( uTexel.x, 0.0)));
+  float hu = dec(texture2D(uHeight, vUv + vec2(0.0,  uTexel.y)));
+  float hd = dec(texture2D(uHeight, vUv + vec2(0.0, -uTexel.y)));
   if (uDebug > 0.5) {
-    float hc = dec(texture2D(uHeight, hUv));
+    float hc = dec(texture2D(uHeight, vUv));
     gl_FragColor = vec4(vec3(0.5 + hc * 4.0), 1.0); // 0付近=灰, 波=明暗
     return;
   }
@@ -280,6 +283,7 @@ export function useRainRipple(canvas: HTMLCanvasElement | null) {
       texel: gl.getUniformLocation(simProg, 'uTexel'),
       damp: gl.getUniformLocation(simProg, 'uDamp'),
       drops: gl.getUniformLocation(simProg, 'uDrops'),
+      dropAspect: gl.getUniformLocation(simProg, 'uDropAspect'),
     }
     const uRen = {
       height: gl.getUniformLocation(renderProg, 'uHeight'),
@@ -307,6 +311,10 @@ export function useRainRipple(canvas: HTMLCanvasElement | null) {
       gl.uniform2f(uSim.texel, 1 / SIM, 1 / SIM)
       gl.uniform1f(uSim.damp, 0.991)
       gl.uniform3fv(uSim.drops, drops)
+      // 雫を画面比で潰して打つ補正。縦長画面なら縦に狭い楕円で打ち、
+      // 表示時の縦伸ばしと相殺して画面上で真円にする。
+      const da = cv.width / cv.height
+      gl.uniform2f(uSim.dropAspect, da >= 1 ? da : 1, da >= 1 ? 1 : 1 / da)
       gl.drawArrays(gl.TRIANGLES, 0, 3)
       // ローテーション: prev <- curr <- next
       const tmp = texPrev
