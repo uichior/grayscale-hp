@@ -1,7 +1,8 @@
 'use client'
 
-import { useState, type CSSProperties } from 'react'
+import { useState, useEffect, type CSSProperties } from 'react'
 import { useGrayscaleV2 } from './GrayscaleV2'
+import { useRainRipple } from './RainRipple'
 
 /**
  * GrayscaleLP — Claude Design 版 LP のマークアップ（React 移植）
@@ -67,6 +68,17 @@ const SCRUB_LINES = [
 export function GrayscaleLP() {
   const rootRef = useGrayscaleV2()
 
+  // 既定は WebGL リップル（雨×波紋）。?hero=ink で従来の煙 Canvas
+  // （GrayscaleV2 の data-ink）に戻せる。煙ロジックは温存。
+  // 初期値 true で初回描画から雨にし、煙→雨の切替チラつきを防ぐ。
+  const [rainMode, setRainMode] = useState(true)
+  // callback ref を state に保持し、canvas マウント時に確実にフックへ渡す
+  const [rainCanvas, setRainCanvas] = useState<HTMLCanvasElement | null>(null)
+  useEffect(() => {
+    setRainMode(new URLSearchParams(window.location.search).get('hero') !== 'ink')
+  }, [])
+  useRainRipple(rainCanvas)
+
   return (
     <div ref={rootRef}>
       {/* プログレスバー */}
@@ -100,20 +112,23 @@ export function GrayscaleLP() {
       </header>
 
       {/* ヒーロー */}
-      <section data-screen-label="Hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', padding: '110px clamp(20px, 5.5vw, 72px) 44px', boxSizing: 'border-box', overflow: 'hidden', background: '#F4F1EA', color: '#1A1712' }}>
-        <canvas data-ink style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block', pointerEvents: 'none', mixBlendMode: 'multiply' }} />
+      <section data-screen-label="Hero" style={{ position: 'relative', minHeight: '100vh', display: 'flex', flexDirection: 'column', padding: '110px clamp(20px, 5.5vw, 72px) 44px', boxSizing: 'border-box', overflow: 'hidden', background: rainMode ? '#1A1712' : '#F4F1EA', color: rainMode ? '#F4F1EA' : '#1A1712' }}>
+        <canvas data-ink style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: rainMode ? 'none' : 'block', pointerEvents: 'none', mixBlendMode: 'multiply' }} />
+        {rainMode && (
+          <canvas ref={setRainCanvas} data-rain style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', display: 'block', pointerEvents: 'none' }} />
+        )}
         <div data-hero-content style={{ position: 'relative', zIndex: 2, margin: 'auto 0', willChange: 'transform, opacity' }}>
           <p style={{ margin: 0, font: `400 11px/1.8 ${MONO}`, letterSpacing: '0.2em', color: '#938C7E', animation: 'gsFade 0.9s cubic-bezier(0.22, 1, 0.36, 1) 0.95s both' }}>GRAYSCALE INC. — SAAS SELECT SHOP / CONSULTING / DEVELOPMENT</p>
           <h1 style={{ margin: '26px 0 0', fontFamily: MINCHO, fontWeight: 600, fontSize: 'clamp(48px, 10vw, 142px)', lineHeight: 1.14, letterSpacing: '0.015em', fontFeatureSettings: "'palt'", textWrap: 'balance' } as CSSProperties}>
             <span style={{ display: 'block', overflow: 'hidden' }}><span style={{ display: 'inline-block', animation: 'gsRise 1.05s cubic-bezier(0.22, 1, 0.36, 1) 1.0s both' }}>全部やるから、</span></span>
             <span style={{ display: 'block', overflow: 'hidden' }}><span style={{ display: 'inline-block', animation: 'gsRise 1.05s cubic-bezier(0.22, 1, 0.36, 1) 1.12s both' }}>本物<span style={{ color: '#9B7B45' }}>。</span></span></span>
           </h1>
-          <p style={{ margin: '34px 0 0', maxWidth: '36em', fontFamily: KAKU, fontWeight: 400, fontSize: 'clamp(14px, 1.4vw, 17px)', lineHeight: 2.1, letterSpacing: '0.03em', color: '#544E43', animation: 'gsFade 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.45s both', textWrap: 'pretty' } as CSSProperties}>自分で使って、確かめたSaaSだけを売る。現場に定着するまで、離れない。届かない部分は、自分たちでつくる。<br />——SaaSのセレクトショップ、株式会社Grayscale。</p>
+          <p style={{ margin: '34px 0 0', maxWidth: '36em', fontFamily: KAKU, fontWeight: 400, fontSize: 'clamp(14px, 1.4vw, 17px)', lineHeight: 2.1, letterSpacing: '0.03em', color: rainMode ? 'rgba(244,241,234,0.78)' : '#544E43', animation: 'gsFade 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.45s both', textWrap: 'pretty' } as CSSProperties}>自分で使って、確かめたSaaSだけを売る。現場に定着するまで、離れない。届かない部分は、自分たちでつくる。<br />——SaaSのセレクトショップ、株式会社Grayscale。</p>
         </div>
         <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 24, animation: 'gsFade 0.9s cubic-bezier(0.22, 1, 0.36, 1) 1.75s both' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 12 }}>
             <span style={{ font: `400 10px/1 ${MONO}`, letterSpacing: '0.24em', color: '#938C7E' }}>SCROLL</span>
-            <span style={{ display: 'block', width: 1, height: 44, background: '#1A1712', animation: 'gsCue 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite' }} />
+            <span style={{ display: 'block', width: 1, height: 44, background: rainMode ? '#F4F1EA' : '#1A1712', animation: 'gsCue 1.8s cubic-bezier(0.65, 0, 0.35, 1) infinite' }} />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 7, textAlign: 'right', font: `400 11px/1 ${MONO}`, letterSpacing: '0.18em', color: '#71695C' }}>
             <span>N° 01 — SELECTION</span>
